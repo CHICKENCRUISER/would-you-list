@@ -2,11 +2,11 @@ package hello.subFlix_v2.repository;
 
 
 import hello.subFlix_v2.domain.Entertainment;
+import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
-import java.lang.reflect.Member;
 import java.util.*;
 
+//@Repository
 public class MemoryEntertainmentRepository implements EntertainmentRepository{
 
     private static Map<Long, Entertainment> store = new HashMap<>();
@@ -38,6 +38,5 @@ public class MemoryEntertainmentRepository implements EntertainmentRepository{
 
     public void clearStore() {
         store.clear();
-
     }
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+  <div>
+    <table>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>제목</th> </tr>
+      </thead>
+      <tbody>
+      <tr th:each="entertainment : ${entertainments}">
+        <td th:text="${entertainment.id}"></td>
+        <td th:text="${entertainment.title}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div> <!-- /container -->
+</body>
+</html>
