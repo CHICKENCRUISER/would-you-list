@@ -24,7 +24,8 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	implementation ("org.springframework.boot:spring-boot-starter-jdbc")
+	//implementation ("org.springframework.boot:spring-boot-starter-jdbc")
+	implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly ("com.h2database:h2")
 }
 
