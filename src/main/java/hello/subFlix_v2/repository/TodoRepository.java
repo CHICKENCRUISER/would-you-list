@@ -13,4 +13,6 @@ public interface TodoRepository {
     Optional<Todo> findByName(String name);
     List<Todo> findAll();
 
+    void delete(Long id);
+
 }

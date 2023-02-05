@@ -1,13 +1,11 @@
 package hello.subFlix_v2.controller;
 
-import hello.subFlix_v2.domain.Category;
-
 public class TodoForm {
 
     private String user;
     private String name;
     private String date;
-    private Category category;
+    private String category;
     private String content;
 
     public String getUser() {
@@ -34,11 +32,11 @@ public class TodoForm {
         this.date = date;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 

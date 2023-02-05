@@ -19,6 +19,6 @@ public class Todo {
     private String user;
     private String name;
     private String date;
-    private Category category;
+    private String category;
     private String content;
 }
