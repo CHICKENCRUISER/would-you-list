@@ -10,11 +10,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Entertainment {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String url;
+
+    private String user;
+    private String name;
+    private String date;
+    private Category category;
+    private String content;
 }

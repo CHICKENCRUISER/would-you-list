@@ -1,6 +1,6 @@
 package hello.subFlix_v2.repository;
 
-import hello.subFlix_v2.domain.Entertainment;
+import hello.subFlix_v2.domain.Todo;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcEntertainmentRepository implements EntertainmentRepository {
+public class JdbcTodoRepository implements TodoRepository {
 
     private final DataSource dataSource;
 
-    public JdbcEntertainmentRepository(DataSource dataSource) {
+    public JdbcTodoRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Entertainment save(Entertainment entertainment) {
-        String sql = "insert into entertainment(title) values(?)";
+    public Todo save(Todo todo) {
+        String sql = "insert into todo(name) values(?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -28,15 +28,15 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, entertainment.getTitle());
+            pstmt.setString(1, todo.getName());
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                entertainment.setId(rs.getLong(1));
+                todo.setId(rs.getLong(1));
             } else {
                 throw new SQLException("id 조회 실패");
             }
-            return entertainment;
+            return todo;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {
@@ -45,8 +45,8 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
     }
 
     @Override
-    public Optional<Entertainment> findById(Long id) {
-        String sql = "select * from entertainment where id = ?";
+    public Optional<Todo> findById(Long id) {
+        String sql = "select * from todo where id = ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -60,10 +60,10 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
             rs = pstmt.executeQuery();
 
             if(rs.next()) {
-                Entertainment entertainment = new Entertainment();
-                entertainment.setId(rs.getLong("id"));
-                entertainment.setTitle(rs.getString("title"));
-                return Optional.of(entertainment);
+                Todo todo = new Todo();
+                todo.setId(rs.getLong("id"));
+                todo.setName(rs.getString("name"));
+                return Optional.of(todo);
             } else {
                 return Optional.empty();
             }
@@ -75,8 +75,8 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
         }
     }
     @Override
-    public List<Entertainment> findAll() {
-        String sql = "select * from entertainment";
+    public List<Todo> findAll() {
+        String sql = "select * from todo";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -88,14 +88,14 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
 
             rs = pstmt.executeQuery();
 
-            List<Entertainment> entertainments = new ArrayList<>();
+            List<Todo> todos = new ArrayList<>();
             while(rs.next()) {
-                Entertainment entertainment = new Entertainment();
-                entertainment.setId(rs.getLong("id"));
-                entertainment.setTitle(rs.getString("title"));
-                entertainments.add(entertainment);
+                Todo todo = new Todo();
+                todo.setId(rs.getLong("id"));
+                todo.setName(rs.getString("name"));
+                todos.add(todo);
             }
-            return entertainments;
+            return todos;
 
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -104,8 +104,8 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
         }
     }
     @Override
-    public Optional<Entertainment> findByTitle(String title) {
-        String sql = "select * from entertainment where title = ?";
+    public Optional<Todo> findByName(String name) {
+        String sql = "select * from todo where name = ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -114,15 +114,15 @@ public class JdbcEntertainmentRepository implements EntertainmentRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, title);
+            pstmt.setString(1, name);
 
             rs = pstmt.executeQuery();
 
             if(rs.next()) {
-                Entertainment entertainment = new Entertainment();
-                entertainment.setId(rs.getLong("id"));
-                entertainment.setTitle(rs.getString("title"));
-                return Optional.of(entertainment);
+                Todo todo = new Todo();
+                todo.setId(rs.getLong("id"));
+                todo.setName(rs.getString("name"));
+                return Optional.of(todo);
             }
             return Optional.empty();
 

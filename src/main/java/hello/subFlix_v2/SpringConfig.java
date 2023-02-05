@@ -1,15 +1,9 @@
 package hello.subFlix_v2;
 
-import hello.subFlix_v2.repository.EntertainmentRepository;
-import hello.subFlix_v2.repository.JdbcEntertainmentRepository;
-import hello.subFlix_v2.repository.JpaEntertainmentRepository;
-import hello.subFlix_v2.repository.MemoryEntertainmentRepository;
-import hello.subFlix_v2.service.EntertainmentService;
-import jakarta.persistence.EntityManager;
+import hello.subFlix_v2.repository.TodoRepository;
+import hello.subFlix_v2.service.TodoService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
@@ -22,22 +16,22 @@ public class SpringConfig {
 //        this.em = em;
 //    }
 
-    private final EntertainmentRepository entertainmentRepository;
+    private final TodoRepository todoRepository;
 
-    public SpringConfig(EntertainmentRepository entertainmentRepository) {
-        this.entertainmentRepository = entertainmentRepository;
+    public SpringConfig(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
     }
 
     @Bean
-    public EntertainmentService entertainmentService() {
-        return new EntertainmentService(entertainmentRepository);
+    public TodoService todoService() {
+        return new TodoService(todoRepository);
     }
 }
 
 //    @Bean
-//    public EntertainmentRepository entertainmentRepository() {
-//        return new MemoryEntertainmentRepository();
-//        return new JdbcEntertainmentRepository(dataSource);
-//        return new JpaEntertainmentRepository(em);
+//    public TodoRepository todoRepository() {
+//        return new MemoryTodoRepository();
+//        return new JdbcTodoRepository(dataSource);
+//        return new JpaTodoRepository(em);
 //    }
 //}
