@@ -1,14 +1,9 @@
 import React from "react";
-import {
-    HashRouter as Router,
-    Routes,
-    Route
-} from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../routes/Home";
-import Todo from "../routes/Todo";
-import NewTodo from "../routes/NewTodo";
+import Todo from "./Todo";
+import NewTodo from "./NewTodo";
 // import Navigation from "../components/Navigation";
-
 
 const AppRouter = () => {
   return (
@@ -19,7 +14,7 @@ const AppRouter = () => {
         <Route path="/newTodo" element={<NewTodo />} />
       </Routes>
     </Router>
-  )
-}
+  );
+};
 
 export default AppRouter;

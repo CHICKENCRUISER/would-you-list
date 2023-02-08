@@ -8,13 +8,12 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  FormControl,
-  FormLabel,
-  Input,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
-import NewTodo from "../routes/NewTodo";
+import NewTodo from "./NewTodo";
 
+//투두리스트 추가하기 모달 컴포넌트
+//Home => MainTabs => Todo => AddModal
 function AddModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
