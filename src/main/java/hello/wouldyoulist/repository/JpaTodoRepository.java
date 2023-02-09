@@ -28,6 +28,16 @@ public class JpaTodoRepository implements TodoRepository {
                 .getResultList();
     }
 
+    public List<Todo> findStateFalse() {
+        return em.createQuery("select t from Todo t where t.state = false")
+                .getResultList();
+    }
+
+    public List<Todo> findStateTrue() {
+        return em.createQuery("select t from Todo t where t.state = true")
+                .getResultList();
+    }
+
     public Optional<Todo> findById(Long id) {
         Todo todo = em.find(Todo.class, id);
         return Optional.ofNullable(todo);
