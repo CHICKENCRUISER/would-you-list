@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getTodosByState } from "../models/todos.js";
+import { getTodosByState } from "../../models/todos.js";
 import TodoBlock from "./TodoBlock";
 import { Box, Accordion } from "@chakra-ui/react";
-import AddModal from "./AddModal";
+import AddModal from "./TodoAddModal";
 
 
 //Todo 목록을 보여주는 컴포넌트

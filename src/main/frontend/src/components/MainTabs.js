@@ -1,5 +1,5 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import Todo from "./Todo";
+import Todo from "./Todo/Todo";
 
 //메인 탭
 //Home => MainTabs

@@ -1,38 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { createTodo } from "../../models/todos";
 import { FormControl, Input, Select } from "@chakra-ui/react";
-import { updateTodo } from "../models/todos";
-import { useState } from "react";
 
-//EditForm 컴포넌트
-//Home => MainTabs => Todo => TodoBlock => EditForm
-const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
-  //EditForm에서 입력받은 값을 state에 저장
-  //타이핑을 할 때마다 state가 업데이트되고, state가 업데이트되면 화면이 다시 렌더링된다.
-  const [name, setName] = useState(todo.name);
-  const [category, setCategory] = useState(todo.category);
-  const [content, setContent] = useState(todo.content);
+const NewTodo = ({ closeModal, refreshTodos }) => {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
+  // const [date, setDate] = useState(new Date());
 
-  //EditForm에서 입력받은 값을 서버에 업데이트하는 함수
-  const editFormSubmitted = async (e) => {
+  const todoFormSubmitted = async (e) => {
+    closeModal();
     e.preventDefault();
-    const edittedTodo = {
-      user: todo.user,
-      date: todo.date,
+    const newTodo = {
+      user: "이동섭",
+      date: Date.now(),
       name,
       category,
       content,
     };
     try {
-      await updateTodo(todo.id, edittedTodo);
-      refreshTodos();
+      await createTodo(newTodo);
     } catch (e) {
       console.error(e);
     }
-    toggleEdit();
+    refreshTodos();
   };
 
   return (
-    <form onSubmit={editFormSubmitted}>
+    <form onSubmit={todoFormSubmitted}>
       <FormControl>
         <Input
           type="text"
@@ -43,7 +38,7 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           required
         />
         <Select
-          placeholder="Select option"
+          placeholder="Select category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           mb={4}
@@ -60,18 +55,17 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
         </Select>
         <Input
           type="text"
-          placeholder="Content"
+          placeholder="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           mb={4}
           required
         />
-
+        {/* <DatePicker selected={date} onChange={date => setDate(date)} /> */}
         <Input type="submit" value="Done!" />
       </FormControl>
-      <button onClick={toggleEdit}>Cancle</button>
     </form>
   );
 };
 
-export default EditForm;
+export default NewTodo;

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { deleteTodo } from "../models/todos";
+import { deleteTodo } from "../../models/todos";
 import { useNavigate } from "react-router-dom";
 const ShowTodoContent = ({ todo, refreshTodos, toggleEdit, isDone }) => {
   const deleteBtnClicked = async () => {

@@ -8,9 +8,9 @@ import {
   Checkbox,
   Badge,
 } from "@chakra-ui/react";
-import EditForm from "./EditForm";
-import ShowTodoContent from "./ShowTodoContent";
-import { toggleTodoState } from "../models/todos";
+import EditForm from "./TodoEditForm";
+import ShowTodoContent from "./TodoBlockOptions";
+import { toggleTodoState } from "../../models/todos";
 
 
 //Todo 한블럭 생성 컴포넌트

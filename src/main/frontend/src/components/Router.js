@@ -1,15 +1,11 @@
 import React from "react";
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
-  BrowserRouter,
 } from "react-router-dom";
 import Home from "../routes/Home";
-import Todo from "./Todo";
-import NewTodo from "./NewTodo";
-import Navigation from "../components/Navigation";
-import AddReview from "./AddReview";
+import AddReview from "./Review/AddReview";
 
 const AppRouter = () => {
   return (
