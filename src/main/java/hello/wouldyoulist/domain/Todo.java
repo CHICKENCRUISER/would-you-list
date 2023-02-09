@@ -1,9 +1,6 @@
 package hello.wouldyoulist.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +18,11 @@ public class Todo {
     private String date;
     private String category;
     private String content;
+    private Boolean state;
+
+    //기본값 세팅 로직
+    @PrePersist
+    public void prePersist() {
+        this.state = this.state == null ? false : this.state;
+    }
 }

@@ -36,6 +36,12 @@ public class TodoService {
         findTodo.setContent(content);
     }
 
+    @Transactional
+    public void toggleTodo(Long todoId) {
+        Todo findTodo = todoRepository.findById(todoId).get();
+        findTodo.setState(true);
+    }
+
     public List<Todo> findTodos() {
         return todoRepository.findAll();
     }
