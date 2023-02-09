@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import EditForm from "./EditForm";
 import ShowTodoContent from "./ShowTodoContent";
-import { updateTodo } from "../models/todos";
+import { toggleTodoState } from "../models/todos";
 
 
 //Todo 한블럭 생성 컴포넌트
@@ -18,7 +18,6 @@ import { updateTodo } from "../models/todos";
 const TodoBlock = ({ todo, setTodos, refreshTodos, isDone }) => {
   //Todo 블럭의 edit 상태를 관리하는 state
   const [edit, setEdit] = useState(false);
-  const [state, setState] = useState(todo.state);
 
   //tag 색상 관리 변수
   const tagColors = {
@@ -37,25 +36,15 @@ const TodoBlock = ({ todo, setTodos, refreshTodos, isDone }) => {
     setEdit((prev) => !prev);
   };
   const toggleState = async () => {
-    setState((prev) => !prev);
-    const edittedTodo = {
-      user: todo.user,
-      name: todo.name,
-      date: todo.date,
-      category: todo.category,
-      content: todo.content,
-      state: true
-    }
-    const res = await updateTodo(todo.id, edittedTodo);
-    console.log(res, edittedTodo);
-    refreshTodos();
+    await toggleTodoState(todo.id);
+    window.location.replace("/");
   }
 
   return (
     <AccordionItem>
       <h2>
         <AccordionButton>
-          <Checkbox mr={2} onChange={toggleState}></Checkbox>
+          <Checkbox mr={2} isChecked={todo.state} onChange={toggleState}></Checkbox>
           <Box as="span" flex="1" textAlign="left">
             {todo.name}
           </Box>

@@ -5,7 +5,7 @@ import Todo from "./Todo";
 //Home => MainTabs
 const MainTabs = () => {
   return (
-    <Tabs defaultIndex={1}>
+    <Tabs defaultIndex={0}>
       <TabList>
         <Tab>진행중인 리스트</Tab>
         <Tab>완료한 리스트</Tab>

@@ -4,6 +4,7 @@ import TodoBlock from "./TodoBlock";
 import { Box, Accordion } from "@chakra-ui/react";
 import AddModal from "./AddModal";
 
+
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
 const Todo = ({ isDone }) => {

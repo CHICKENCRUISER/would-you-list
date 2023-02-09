@@ -20,7 +20,6 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
     };
     try {
       await createTodo(newTodo);
-      setTodos(await getTodos());
     } catch (e) {
       console.error(e);
     }
