@@ -7,5 +7,6 @@ CREATE TABLE todo (
     date varchar(255),
     category varchar(255),
     content varchar(255),
+    state boolean default false,
     primary key (id)
 );

@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { createTodo } from "../models/todos";
-import {
-  FormControl,
-  Input,
-  Select
-} from "@chakra-ui/react";
-import { getTodos } from "../models/todos";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import { FormControl, Input, Select } from "@chakra-ui/react";
 
-
-const NewTodo = ({ closeModal, setTodos }) => {
+const NewTodo = ({ closeModal, refreshTodos }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
@@ -32,6 +24,7 @@ const NewTodo = ({ closeModal, setTodos }) => {
     } catch (e) {
       console.error(e);
     }
+    refreshTodos();
   };
 
   return (

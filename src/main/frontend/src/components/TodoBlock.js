@@ -15,8 +15,7 @@ import { updateTodo } from "../models/todos";
 
 //Todo 한블럭 생성 컴포넌트
 //Home => MainTabs => Todo => TodoBlock
-const TodoBlock = ({ todo, setTodos, refreshTodos }) => {
-
+const TodoBlock = ({ todo, setTodos, refreshTodos, isDone }) => {
   //Todo 블럭의 edit 상태를 관리하는 state
   const [edit, setEdit] = useState(false);
   const [state, setState] = useState(todo.state);
@@ -83,6 +82,7 @@ const TodoBlock = ({ todo, setTodos, refreshTodos }) => {
             todo={todo}
             refreshTodos={refreshTodos}
             toggleEdit={toggleEdit}
+            isDone={isDone}
           />
         )}
       </AccordionPanel>

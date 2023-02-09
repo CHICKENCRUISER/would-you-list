@@ -14,7 +14,7 @@ import NewTodo from "./NewTodo";
 
 //투두리스트 추가하기 모달 컴포넌트
 //Home => MainTabs => Todo => AddModal
-function AddModal({ setTodos }) {
+function AddModal({ refreshTodos }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -26,7 +26,7 @@ function AddModal({ setTodos }) {
           <ModalHeader>투두리스트 추가하기</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <NewTodo closeModal={onClose} setTodos={setTodos} />
+            <NewTodo closeModal={onClose} refreshTodos={refreshTodos} />
           </ModalBody>
 
           <ModalFooter></ModalFooter>

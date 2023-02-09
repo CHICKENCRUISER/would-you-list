@@ -29,10 +29,11 @@ const Todo = ({ isDone }) => {
             todo={todo}
             setTodos={setTodos}
             refreshTodos={refreshTodos}
+            isDone={isDone}
           />
         ))}
       </Accordion>
-      <AddModal setTodos={setTodos} />
+      {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
     </Box>
   );
 };

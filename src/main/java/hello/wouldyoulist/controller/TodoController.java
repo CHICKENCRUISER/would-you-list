@@ -33,6 +33,7 @@ public class TodoController {
         todo.setDate(request.getDate());
         todo.setCategory(request.getCategory());
         todo.setContent(request.getContent());
+        todo.setState(request.getState());
 
         Long id = todoService.saveTodo(todo);
         return new CreateTodoResponse(todo.getId());
@@ -49,6 +50,14 @@ public class TodoController {
         return new UpdateTodoResponse(findTodo.getId(), findTodo.getUser());
     }
 
+    @PutMapping("/todo/{todoId}/toggle")
+    public UpdateTodoResponse updateTodo(@PathVariable Long todoId){
+
+        todoService.toggleTodo(todoId);
+        Todo findTodo = todoService.findOne(todoId).get();
+        return new UpdateTodoResponse(findTodo.getId(), findTodo.getUser());
+    }
+
     @DeleteMapping("/todo/{todoId}")
     public Long deleteTodo(@PathVariable Long todoId) {
         todoService.deleteTodo(todoId);
@@ -62,6 +71,7 @@ public class TodoController {
         private String date;
         private String category;
         private String content;
+        private Boolean state;
     }
 
     @Data

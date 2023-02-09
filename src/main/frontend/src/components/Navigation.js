@@ -1,7 +1,6 @@
 import React from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from "@chakra-ui/react";
 import Home from "../routes/Home";
-
 
 const Navigation = () => {
   return (
@@ -27,6 +26,6 @@ const Navigation = () => {
       </Tabs>
     </>
   );
-}
+};
 
 export default Navigation;

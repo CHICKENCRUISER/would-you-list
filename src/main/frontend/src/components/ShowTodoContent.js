@@ -1,7 +1,8 @@
 import { Button } from "@chakra-ui/button";
 import { EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import { deleteTodo } from "../models/todos";
-const ShowTodoContent = ({ todo, refreshTodos, toggleEdit }) => {
+import { useNavigate } from "react-router-dom";
+const ShowTodoContent = ({ todo, refreshTodos, toggleEdit, isDone }) => {
   const deleteBtnClicked = async () => {
     try {
       await deleteTodo(todo.id);
@@ -10,6 +11,8 @@ const ShowTodoContent = ({ todo, refreshTodos, toggleEdit }) => {
       console.error(e);
     }
   };
+  let navigate = useNavigate();
+
   return (
     <>
       <div> {todo.content}</div>
@@ -29,6 +32,16 @@ const ShowTodoContent = ({ todo, refreshTodos, toggleEdit }) => {
       >
         Delete
       </Button>
+      {isDone ? (
+        <Button
+          leftIcon={<EditIcon />}
+          onClick={() => navigate(`/review/new/${todo.id}`)}
+          colorScheme="teal"
+          size="xs"
+        >
+          리뷰 작성
+        </Button>
+      ) : null}
     </>
   );
 };
