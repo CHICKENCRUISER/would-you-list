@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { getTodos } from "../models/todos.js";
+import { getTodosByState } from "../models/todos.js";
 import TodoBlock from "./TodoBlock";
 import { Box, Accordion } from "@chakra-ui/react";
 import AddModal from "./AddModal";
 
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
-const Todo = () => {
+const Todo = ({ isDone }) => {
   const [todos, setTodos] = useState([]);
 
   //Todo 목록을 서버에서 받아오는 함수
   const refreshTodos = async () => {
-    const res = await getTodos();
+    const res = await getTodosByState(isDone);
     setTodos(res);
   };
 
@@ -32,7 +32,7 @@ const Todo = () => {
           />
         ))}
       </Accordion>
-      <AddModal />
+      <AddModal setTodos={setTodos} />
     </Box>
   );
 };

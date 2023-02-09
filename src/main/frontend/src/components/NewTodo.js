@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import { createTodo } from "../models/todos";
-import { FormControl, Input, Select } from "@chakra-ui/react";
+import {
+  FormControl,
+  Input,
+  Select
+} from "@chakra-ui/react";
+import { getTodos } from "../models/todos";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 
-const NewTodo = ({ closeModal }) => {
+
+const NewTodo = ({ closeModal, setTodos }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
+  // const [date, setDate] = useState(new Date());
 
   const todoFormSubmitted = async (e) => {
     closeModal();
@@ -19,10 +28,10 @@ const NewTodo = ({ closeModal }) => {
     };
     try {
       await createTodo(newTodo);
+      setTodos(await getTodos());
     } catch (e) {
       console.error(e);
     }
-    // navigate("/todo");
   };
 
   return (
@@ -60,7 +69,7 @@ const NewTodo = ({ closeModal }) => {
           mb={4}
           required
         />
-
+        {/* <DatePicker selected={date} onChange={date => setDate(date)} /> */}
         <Input type="submit" value="Done!" />
       </FormControl>
     </form>

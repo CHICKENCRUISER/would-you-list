@@ -15,11 +15,11 @@ const MainTabs = () => {
       <TabPanels>
         <TabPanel>
           {/* 진행중인 리스트 */}
-          <Todo />
+          <Todo isDone={false} />
         </TabPanel>
         <TabPanel>
           {/* 완료한 리스트 */}
-          <Todo />
+          <Todo isDone={true} />
         </TabPanel>
         <TabPanel>
           {/* 리뷰 */}

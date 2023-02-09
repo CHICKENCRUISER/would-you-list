@@ -9,6 +9,21 @@ const getTodos = async () => {
   return response.data;
 }
 
+const getTodosByState = async (state) => {
+  const response = await getTodos();
+  let result;
+  if (state) {
+    result = response.filter(todo => {
+      return todo.state;
+    });
+  } else {
+    result = response.filter(todo => {
+      return !todo.state;
+    });
+  }
+  return result;
+}
+
 const createTodo = async (todo) => {
   const response = await axios.post(`${url}/new`, todo);
   return response.data;
@@ -24,4 +39,4 @@ const updateTodo = async (id, todo) => {
   return response.data;
 }
 
-export { getTodos, createTodo, deleteTodo, updateTodo };
+export { getTodos, getTodosByState, createTodo, deleteTodo, updateTodo };
