@@ -29,12 +29,12 @@ public class JpaTodoRepository implements TodoRepository {
     }
 
     public List<Todo> findStateFalse() {
-        return em.createQuery("select t from Todo t where t.state = false")
+        return em.createQuery("select t from Todo t where t.state = false", Todo.class)
                 .getResultList();
     }
 
     public List<Todo> findStateTrue() {
-        return em.createQuery("select t from Todo t where t.state = true")
+        return em.createQuery("select t from Todo t where t.state = true", Todo.class)
                 .getResultList();
     }
 
