@@ -6,7 +6,8 @@ import AddModal from "./AddModal";
 
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
-const Todo = () => {
+const Todo = ({ isDone }) => {
+  console.log("Todo.js isDone: ", isDone);
   const [todos, setTodos] = useState([]);
 
   //Todo 목록을 서버에서 받아오는 함수
@@ -29,10 +30,11 @@ const Todo = () => {
             todo={todo}
             setTodos={setTodos}
             refreshTodos={refreshTodos}
+            isDone={isDone}
           />
         ))}
       </Accordion>
-      <AddModal />
+      {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
     </Box>
   );
 };

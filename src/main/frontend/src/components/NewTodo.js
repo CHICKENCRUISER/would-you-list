@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createTodo } from "../models/todos";
 import { FormControl, Input, Select } from "@chakra-ui/react";
 
-const NewTodo = ({ closeModal }) => {
+const NewTodo = ({ closeModal, refreshTodos }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
@@ -22,6 +22,7 @@ const NewTodo = ({ closeModal }) => {
     } catch (e) {
       console.error(e);
     }
+    refreshTodos();
     // navigate("/todo");
   };
 
