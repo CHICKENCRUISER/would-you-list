@@ -30,6 +30,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+//    @GetMapping("/review")
+//    public List<Todo> reviewList(){
+//        return reviewService.getReviews();
+//    }
+
     @Value("${file.dir}")
     private String uploadDir;
 
