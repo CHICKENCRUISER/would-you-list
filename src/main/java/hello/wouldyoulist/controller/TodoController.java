@@ -24,6 +24,11 @@ public class TodoController {
         return todoService.findTodos();
     }
 
+    @GetMapping("/doneTodo")
+    public List<Todo> doneTodoList() {
+        return todoService.findDoneTodos();
+    }
+
     @PostMapping(value = "/todo/new")
     public CreateTodoResponse create(@RequestBody CreateTodoRequest request) {
         //엔티티를 직접 받아오면, 엔티티 검증 정보나 필드명 변경에 취약 -> 별도의 DTO 사용
@@ -51,7 +56,7 @@ public class TodoController {
     }
 
     @PutMapping("/todo/{todoId}/toggle")
-    public UpdateTodoResponse updateTodo(@PathVariable Long todoId){
+    public UpdateTodoResponse toggleTodo(@PathVariable Long todoId) {
 
         todoService.toggleTodo(todoId);
         Todo findTodo = todoService.findOne(todoId).get();

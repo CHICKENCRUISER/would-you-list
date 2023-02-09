@@ -39,11 +39,19 @@ public class TodoService {
     @Transactional
     public void toggleTodo(Long todoId) {
         Todo findTodo = todoRepository.findById(todoId).get();
-        findTodo.setState(true);
+        if (findTodo.getState() == true) {
+            findTodo.setState(false);
+        } else {
+            findTodo.setState(true);
+        }
     }
 
     public List<Todo> findTodos() {
-        return todoRepository.findAll();
+        return todoRepository.findStateFalse();
+    }
+
+    public List<Todo> findDoneTodos() {
+        return todoRepository.findStateTrue();
     }
 
     public Optional<Todo> findOne(Long todoId) {
