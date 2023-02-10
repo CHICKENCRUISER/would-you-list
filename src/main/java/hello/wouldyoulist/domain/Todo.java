@@ -1,5 +1,6 @@
 package hello.wouldyoulist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,8 @@ public class Todo {
     private String content;
     private Boolean state;
 
-    @OneToOne
-    @JoinColumn(name = "REVIEW_ID")
+    @JsonIgnore
+    @OneToOne(mappedBy = "todo")
     private Review review;
 
     //기본값 세팅 로직

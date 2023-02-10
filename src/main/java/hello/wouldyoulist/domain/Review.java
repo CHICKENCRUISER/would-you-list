@@ -1,5 +1,6 @@
 package hello.wouldyoulist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -12,9 +13,10 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @OneToOne(mappedBy = "review")
+    @OneToOne
+    @JoinColumn(name = "todo_id")
     private Todo todo;
 
     private Long photoId;
