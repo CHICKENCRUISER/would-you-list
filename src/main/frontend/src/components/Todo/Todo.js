@@ -6,7 +6,7 @@ import AddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
-
+import SquareCrop from "../Review/SquareCrop.js";
 
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
@@ -42,6 +42,7 @@ const Todo = ({ isDone }) => {
 
   return (
     <Box m={0}>
+      <SquareCrop />
       <Accordion allowToggle>
         {todos.map((todo) => (
           <TodoBlock
