@@ -5,35 +5,35 @@ import axios from "axios";
 const url = "http://localhost:8080";
 
 const getTodos = async () => {
-  const response = await axios.get(`${url}/todo`);
-  return response.data;
+  const res = await axios.get(`${url}/todo`);
+  return res.data;
 }
 
 const getTodosByState = async (state) => {
-  let response;
-  if (!state) { response = await axios.get(`${url}/todo`); }
-  else { response = await axios.get(`${url}/doneTodo`) }
-  return response.data;
+  let res;
+  if (!state) { res = await axios.get(`${url}/todo`); }
+  else { res = await axios.get(`${url}/doneTodo`) }
+  return res.data;
 }
 
 const createTodo = async (todo) => {
-  const response = await axios.post(`${url}/todo/new`, todo);
-  return response.data;
+  const res = await axios.post(`${url}/todo/new`, todo);
+  return res.data;
 }
 
 const deleteTodo = async (id) => {
-  const response = await axios.delete(`${url}/todo/${id}`);
-  return response.data;
+  const res = await axios.delete(`${url}/todo/${id}`);
+  return res.data;
 }
 
 const updateTodo = async (id, todo) => {
-  const response = await axios.put(`${url}/todo/${id}`, todo);
-  return response.data;
+  const res = await axios.put(`${url}/todo/${id}`, todo);
+  return res.data;
 }
 
 const toggleTodoState = async (id) => {
-  const response = await axios.put(`${url}/todo/${id}/toggle`);
-  return response.data;
+  const res = await axios.put(`${url}/todo/${id}/toggle`);
+  return res.data;
 }
 
 export {
