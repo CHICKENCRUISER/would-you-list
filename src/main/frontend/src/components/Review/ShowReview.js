@@ -1,17 +1,29 @@
-import reviewDummyData from "./reviewDummyData";
 import ReviewCard from "./ReviewCard";
-import { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import { getReviews } from "../../models/reviews";
 
 const ShowReview = () => {
+
+  const [reviews, setReviews] = useState([]);
+
   let { id } = useParams();
   const [height, setHeight] = useState(0);
   const reviewCardRef = useRef(null);
 
   useEffect(() => {
-    setHeight(70 + reviewCardRef.current.offsetHeight * (parseInt(id) - 1));
+    const f = async () => {
+      const res = await getReviews();
+      setReviews(res);
+      console.log(res);
+    }
+    f();
+  }, []);
+  useEffect(() => {
+    if (reviewCardRef.current) {
+      setHeight(70 + reviewCardRef.current.offsetHeight * (parseInt(id) - 1));
+    }
   }, []);
 
   const useScrollTo = (xpos, ypos) => {
@@ -23,13 +35,12 @@ const ShowReview = () => {
 
   return (
     <div>
-      {reviewDummyData.map((data) => {
-        return (
-          <div ref={reviewCardRef} key={data.todoId}>
-            <ReviewCard data={data} />
+      {reviews.map((review) => (
+          <div ref={reviewCardRef} key={review.todo.id}>
+            <ReviewCard data={review} />
           </div>
-        );
-      })}
+        )
+      )}
     </div>
   );
 };

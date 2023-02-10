@@ -13,7 +13,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
-import reviewDummyData from "./reviewDummyData";
+
 
 const ReviewCard = ({ data }) => {
   return (

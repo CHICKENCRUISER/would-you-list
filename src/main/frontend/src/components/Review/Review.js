@@ -3,7 +3,9 @@ import { getReviews } from "../../models/reviews";
 
 
 const Review = () => {
+
   const [reviews, setReviews] = useState([]);
+
   useEffect(() => {
     const f = async () => {
       const res = await getReviews();
@@ -17,7 +19,7 @@ const Review = () => {
       {reviews ? (
         reviews.map((review) => <div key={review.doneDate}>{review.title}</div>)
       ) : (
-        "asdf"
+        <div>리뷰를 작성해보세요!</div>
       )}
     </div>
   )
