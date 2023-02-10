@@ -1,6 +1,9 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
 import Review from "./Review/Review";
+import ShowReview from "./Review/ShowReview";
+import ReviewParent from "./Review/ReviewParent";
+import ReviewGrid from "./Review/ReviewGrid";
 
 //메인 탭
 //Home => MainTabs
@@ -24,7 +27,8 @@ const MainTabs = () => {
         </TabPanel>
         <TabPanel>
           {/* 리뷰 */}
-          <Review />
+          {/* <Review /> */}
+          <ReviewGrid />
         </TabPanel>
       </TabPanels>
     </Tabs>
