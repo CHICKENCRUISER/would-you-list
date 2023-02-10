@@ -1,5 +1,6 @@
 package hello.wouldyoulist.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Todo {
     private String content;
     private Boolean state;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "todo")
     private Review review;
 
