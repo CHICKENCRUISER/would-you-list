@@ -12,10 +12,9 @@ import EditForm from "./TodoEditForm";
 import ShowTodoContent from "./TodoBlockOptions";
 import { toggleTodoState } from "../../models/todos";
 
-
 //Todo 한블럭 생성 컴포넌트
 //Home => MainTabs => Todo => TodoBlock
-const TodoBlock = ({ todo, setTodos, refreshTodos, isDone }) => {
+const TodoBlock = ({ todo, refreshTodos, isDone }) => {
   //Todo 블럭의 edit 상태를 관리하는 state
   const [edit, setEdit] = useState(false);
 
@@ -37,14 +36,19 @@ const TodoBlock = ({ todo, setTodos, refreshTodos, isDone }) => {
   };
   const toggleState = async () => {
     await toggleTodoState(todo.id);
-    window.location.replace("/");
-  }
+    refreshTodos();
+    // window.location.replace("/");
+  };
 
   return (
     <AccordionItem>
       <h2>
         <AccordionButton>
-          <Checkbox mr={2} isChecked={todo.state} onChange={toggleState}></Checkbox>
+          <Checkbox
+            mr={2}
+            isChecked={todo.state}
+            onChange={toggleState}
+          ></Checkbox>
           <Box as="span" flex="1" textAlign="left">
             {todo.name}
           </Box>
