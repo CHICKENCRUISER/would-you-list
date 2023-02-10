@@ -20,8 +20,7 @@ public class Todo {
     private String content;
     private Boolean state;
 
-    @OneToOne
-    @JoinColumn(name = "REVIEW_ID")
+    @OneToOne(mappedBy = "todo")
     private Review review;
 
     //기본값 세팅 로직
