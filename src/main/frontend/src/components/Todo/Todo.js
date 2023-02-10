@@ -6,6 +6,8 @@ import AddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
+
+
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
 const Todo = ({ isDone }) => {

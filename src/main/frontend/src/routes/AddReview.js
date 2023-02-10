@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createTodo } from "../models/todos";
+import { createReview } from "../models/reviews";
 import {
   FormControl,
   Input,
@@ -20,31 +21,36 @@ import { useSelector } from "react-redux";
 const AddReview = () => {
   let { id } = useParams();
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [review, setReview] = useState("");
   const [place, setPlace] = useState("");
   const [expression, setExpression] = useState("happy");
+  const [file, setFile] = useState(null);
 
   let todosDone = useSelector((state) => state.todosDone);
   const todo = todosDone.find((todo) => todo.id === Number(id));
+
+  const imgInputChanged = (e) => {
+    e.preventDefault();
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      setFile(uploadFile);
+    }
+  }
 
   let navigate = useNavigate();
 
   const reviewFormSubmitted = async (e) => {
     e.preventDefault();
-    const newReview = {
-      user: "이동섭",
-      date: Date.now(),
-      title,
-      content,
-      expression,
-      place,
-      todoId: id,
-    };
-    // try {
-    //   await createTodo(newReview);
-    // } catch (e) {
-    //   console.error(e);
-    // }
+    const newReview = new FormData();
+    newReview.append("title", title);
+    newReview.append("review", review);
+    newReview.append("place", place);
+    newReview.append("doneDate", Date.now());
+    newReview.append("expression", expression);
+    newReview.append("todoId", todo.id);
+    newReview.append("file", file);
+    
+    await createReview(newReview);
     navigate("/");
   };
 
@@ -61,10 +67,10 @@ const AddReview = () => {
           <Stack divider={<StackDivider />} spacing="4">
             <Box>
               <Heading size="xs" textTransform="uppercase">
-                content
+                review
               </Heading>
               <Text pt="2" fontSize="sm">
-                {todo.content}
+                {todo.review}
               </Text>
             </Box>
             <Box>
@@ -91,9 +97,9 @@ const AddReview = () => {
                   />
                   <Input
                     type="text"
-                    placeholder="content"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="review"
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
                     mb={4}
                     required
                   />
@@ -105,6 +111,7 @@ const AddReview = () => {
                     mb={4}
                     required
                   />
+                  <input type="file" accept="image/*" onChange={imgInputChanged} />
                   <RadioGroup
                     defaultValue="2"
                     m={4}
