@@ -14,12 +14,14 @@ const ShowReview = () => {
     setHeight(70 + reviewCardRef.current.offsetHeight * (parseInt(id) - 1));
   }, []);
 
-  const useScrollTo = (xpos, ypos) => {
-    useEffect(() => {
-      window.scrollTo(xpos, ypos);
-    }, [height]);
-  };
-  useScrollTo(0, height);
+  //즉시 이동
+  useEffect(() => {
+    window.scrollTo({
+      top: height,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [height]);
 
   return (
     <div>
