@@ -13,8 +13,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
-import reviewDummyData from "./reviewDummyData";
 
+//리뷰 카드 컴포넌트
 const ReviewCard = ({ data }) => {
   return (
     <div
@@ -35,6 +35,7 @@ const ReviewCard = ({ data }) => {
                 <Text>{data.doneDate + " " + data.place + "에서"}</Text>
               </Box>
             </Flex>
+            {/* 이걸 나중에 수정버튼으로 쓰자구 */}
             <IconButton
               variant="ghost"
               colorScheme="gray"
@@ -48,6 +49,7 @@ const ReviewCard = ({ data }) => {
         </CardBody>
         <Image objectFit="cover" src={data.file} alt="Chakra UI" />
 
+        {/* 아래 코드는 카드 하단 인데 사실 쓸모는 없지만 혹시 몰라서 남겨둠 */}
         <CardFooter
           justify="space-between"
           flexWrap="wrap"

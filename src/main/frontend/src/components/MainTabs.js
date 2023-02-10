@@ -1,8 +1,5 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
-import Review from "./Review/Review";
-import ShowReview from "./Review/ShowReview";
-import ReviewParent from "./Review/ReviewParent";
 import ReviewGrid from "./Review/ReviewGrid";
 
 //메인 탭
