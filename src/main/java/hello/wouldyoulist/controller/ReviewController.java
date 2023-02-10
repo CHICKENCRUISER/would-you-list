@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class ReviewController {
@@ -30,10 +31,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-//    @GetMapping("/review")
-//    public List<Todo> reviewList(){
-//        return reviewService.getReviews();
-//    }
+    @GetMapping("/review")
+    @ResponseBody
+    public List<Review> reviewList(){
+        return reviewService.getReviews();
+    }
 
     @Value("${file.dir}")
     private String uploadDir;
