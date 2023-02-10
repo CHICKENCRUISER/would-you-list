@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import Home from "../routes/Home";
-import AddReview from "./Review/AddReview";
+import AddReview from "../routes/AddReview";
 
 const AppRouter = () => {
   return (

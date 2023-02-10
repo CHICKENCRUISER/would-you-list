@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createTodo } from "../../models/todos";
+import { createTodo } from "../models/todos";
 import {
   FormControl,
   Input,
