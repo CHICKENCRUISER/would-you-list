@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,8 +28,11 @@ public class ReviewService {
         return review.getId();
     }
 
-    @Transactional
     public List<Review> getReviews() {
         return reviewRepository.findAll();
+    }
+
+    public Optional<Review> findOne(Long reviewId) {
+        return reviewRepository.findById(reviewId);
     }
 }
