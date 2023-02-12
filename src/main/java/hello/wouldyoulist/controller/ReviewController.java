@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Controller
 public class ReviewController {
 
@@ -92,15 +91,7 @@ public class ReviewController {
         if (file.isEmpty()) {
             review.setPhotoId(0L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
         } else {
-//            //파일을 지정된 경로에 저장 (실제 물리적 저장)
             String originalFilename = file.getOriginalFilename();
-//            String fullPath = uploadDir + originalFilename;
-//            file.transferTo(new File(fullPath));
-//
-//            //파일과 리뷰의 정보를 DB에 저장 (논리적 저장)
-//            Long fileId = fileService.save(new UploadFile(originalFilename, fullPath));
-//            review.setPhotoId(fileId);
-
             String storedFileName=s3Uploader.upload(file,"images");
 
             Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
@@ -111,17 +102,6 @@ public class ReviewController {
         return new CreateReviewResponse(id);
     }
 
-    private Optional<File> convert(MultipartFile file, String originalFileName) throws IOException {
-        File convertFile = new File(originalFileName);
-        if (convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-        return Optional.empty();
-    }
-
     @Data
     static class ReadReviewResponse {
         private Todo todo;
@@ -149,32 +129,7 @@ public class ReviewController {
         private String title;
     }
 
-    @Data
-    static class ReadReviewResponse {
-        private Todo todo;
-        private String photo;
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
 
-        public ReadReviewResponse(Todo todo, String photo, String doneDate, String title, String review, String place, String expression) {
-            this.todo = todo;
-            this.photo = photo;
-            this.doneDate = doneDate;
-            this.title = title;
-            this.review = review;
-            this.place = place;
-            this.expression = expression;
-        }
-    }
-
-    @Data
-    static class ThumbnailReviewResponse {
-        private String photo;
-        private String title;
-    }
 
     @Data
     static class CreateReviewRequest {
