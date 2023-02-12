@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### AWS ###
+### AWS & .DS_Store ###
 application-aws.properties
+.DS_Store
