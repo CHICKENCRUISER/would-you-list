@@ -1,5 +1,8 @@
 package hello.wouldyoulist.controller;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import hello.wouldyoulist.domain.UploadFile;
 import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.service.FileService;
@@ -7,28 +10,31 @@ import hello.wouldyoulist.service.ReviewService;
 import hello.wouldyoulist.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Controller
 public class ReviewController {
 
     private final TodoService todoService;
     private final FileService fileService;
     private final ReviewService reviewService;
+    private final AmazonS3Client amazonS3Client;
 
-    public ReviewController(TodoService todoService, FileService fileService, ReviewService reviewService) {
-        this.todoService = todoService;
-        this.fileService = fileService;
-        this.reviewService = reviewService;
-    }
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     @GetMapping("/review")
     @ResponseBody
@@ -36,10 +42,8 @@ public class ReviewController {
         return reviewService.getReviews();
     }
 
-    @Value("${file.dir}")
-    private String uploadDir;
-
     //참고 링크: https://velog.io/@dhk22/ToyProject-1-SpringBoot를-이용한-파일-업로드에-JPA적용-시키기
+    //S3에 업로드: https://velog.io/@chaeri93/SpringBoot-AWS-S3로-이미지-업로드하기
     @PostMapping(value = "/review/new")
     @ResponseBody
     public CreateReviewResponse create(HttpServletRequest request, @RequestParam MultipartFile file) throws IOException {
@@ -58,16 +62,36 @@ public class ReviewController {
             review.setPhotoId(0L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
         } else {
             //파일을 지정된 경로에 저장 (실제 물리적 저장)
-            String originalFilename = file.getOriginalFilename();
-            String fullPath = uploadDir + originalFilename;
-            file.transferTo(new File(fullPath));
+            String originalFileName = file.getOriginalFilename();
+            //1.MultipartFile을 File로 전환 (업로드를 위해 로컬에도 임시 저장: 저장 경로는 프로젝트의 루트 폴더)
+            File convertFile = convert(file, originalFileName)
+                    .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
+            //2.S3에 파일 업로드 후 URL 받아오기
+            amazonS3Client.putObject(
+                    new PutObjectRequest(bucket, originalFileName, convertFile)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+            String uploadImageUrl = amazonS3Client.getUrl(bucket, originalFileName).toString();
+            //4.로컬에 저장된 파일을 삭제
+            convertFile.delete();
 
             //파일과 리뷰의 정보를 DB에 저장 (논리적 저장)
-            Long fileId = fileService.save(new UploadFile(originalFilename, fullPath));
+            Long fileId = fileService.save(new UploadFile(originalFileName, uploadImageUrl));
             review.setPhotoId(fileId);
         }
         Long id = reviewService.save(review);
         return new CreateReviewResponse(id);
+    }
+
+    private Optional<File> convert(MultipartFile file, String originalFileName) throws  IOException {
+        File convertFile = new File(originalFileName);
+        if(convertFile.createNewFile()) {
+            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+                fos.write(file.getBytes());
+            }
+            return Optional.of(convertFile);
+        }
+        return Optional.empty();
     }
 
     @Data
