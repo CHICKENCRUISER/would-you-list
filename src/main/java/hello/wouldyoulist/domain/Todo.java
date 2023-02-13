@@ -1,6 +1,7 @@
 package hello.wouldyoulist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class Todo {
     private String content;
     private Boolean state;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToOne(mappedBy = "todo")
     private Review review;
 
