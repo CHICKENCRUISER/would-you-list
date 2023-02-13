@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import SquareCrop from "../components/Review/SquareCrop";
 
 const AddReview = () => {
   let { id } = useParams();
@@ -29,13 +30,14 @@ const AddReview = () => {
   let todosDone = useSelector((state) => state.todosDone);
   const todo = todosDone.find((todo) => todo.id === Number(id));
 
-  const imgInputChanged = (e) => {
-    e.preventDefault();
-    if (e.target.files) {
-      const uploadFile = e.target.files[0];
-      setFile(uploadFile);
-    }
-  }
+  // const imgInputChanged = (e) => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const uploadFile = e.target.files[0];
+  //     console.log(uploadFile);
+  //     setFile(uploadFile);
+  //   }
+  // }
 
   let navigate = useNavigate();
 
@@ -111,7 +113,8 @@ const AddReview = () => {
                     mb={4}
                     required
                   />
-                  <input type="file" accept="image/*" onChange={imgInputChanged} />
+                  <SquareCrop setFile={setFile} />
+                  {/* <input type="file" accept="image/*" onChange={imgInputChanged} /> */}
                   <RadioGroup
                     defaultValue="2"
                     m={4}

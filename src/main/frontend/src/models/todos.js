@@ -11,8 +11,22 @@ const getTodos = async () => {
 
 const getTodosByState = async (state) => {
   let response;
+
+  // switch (state) {
+  //   case "false":
+  //     response = await axios.get(`${url}/todo`);
+  //   case "true":
+  //     response = await axios.get(`${url}/doneTodo`);
+  //   case "reviewed":
+  //     response = await axios.get(`${url}/doneTodo`);
+  //     const result = response.data.filter((todo) => {
+  //       if (todo.re)
+  //     })
+
+  // }
+
   if (!state) { response = await axios.get(`${url}/todo`); }
-  else { response = await axios.get(`${url}/doneTodo`) }
+  else { response = await axios.get(`${url}/doneTodo`); }
   return response.data;
 }
 
@@ -35,6 +49,7 @@ const toggleTodoState = async (id) => {
   const response = await axios.put(`${url}/todo/${id}/toggle`);
   return response.data;
 }
+
 
 export {
   getTodos,
