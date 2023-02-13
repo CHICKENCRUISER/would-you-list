@@ -38,7 +38,7 @@ const ReviewGrid = ({ reviewToggleEdit }) => {
               style={{ width: "150px", height: "150px" }}
             >
               <CardBody style={{ padding: "0", justifyContent: "center" }}>
-                <Image objectFit="cover" src={review.file} />
+                <Image objectFit="cover" src={review.photo} width="150px" height="150px" />
               </CardBody>
             </Card>
           ))}

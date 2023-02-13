@@ -47,7 +47,7 @@ const ReviewCard = ({ data }) => {
         <CardBody>
           <Text>{data.review}</Text>
         </CardBody>
-        <Image objectFit="cover" src={data.file} alt="Chakra UI" />
+        <Image objectFit="cover" src={data.photo} alt="Chakra UI" />
 
         {/* 아래 코드는 카드 하단 인데 사실 쓸모는 없지만 혹시 몰라서 남겨둠 */}
         <CardFooter
