@@ -2,6 +2,7 @@ package hello.wouldyoulist;
 
 import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.domain.Todo;
+import hello.wouldyoulist.domain.UploadFile;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,8 @@ public class InitDb {
 
     @PostConstruct
     public void init() {
-        initService.dbInit();
+        initService.todoDbInit();
+        initService.fileDbInit();
     }
 
     @Component
@@ -26,7 +28,7 @@ public class InitDb {
 
         private final EntityManager em;
 
-        public void dbInit() {
+        public void todoDbInit() {
             Todo todo1 = createTodo("이동섭", "바빌론", "2월 5일 오후 7:30", "MOVIE", "어쩌구저쩌구", false, null);
             Todo todo2 = createTodo("이동섭", "풋살", "2월 5일 오후 11:00", "SPORTS", "풋살체련 희망자!", false, null);
             Todo todo3 = createTodo("이동섭", "아바타", "2월 9일 오후 3:30", "MOVIE", "아바타2 보기전", true, null);
@@ -35,6 +37,11 @@ public class InitDb {
             em.persist(todo2);
             em.persist(todo3);
             em.persist(todo4);
+        }
+
+        public void fileDbInit() {
+            UploadFile defaultPhoto = new UploadFile("defaultPhoto.jpeg", "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/1e64424c-5f9a-4032-a8d8-78d5f2af4b27defaultPhoto.jpeg");
+            em.persist(defaultPhoto);
         }
 
         private static Todo createTodo(String user, String name, String date, String category, String content, Boolean state, Review review) {
