@@ -25,8 +25,8 @@ const Todo = ({ isDone }) => {
   // };
 
   const refreshTodos = async () => {
-    const res1 = await getTodosByState(true);
-    const res2 = await getTodosByState(false);
+    const res1 = await getTodosByState("true");
+    const res2 = await getTodosByState("false");
     dispatch(setTodosDone(res1));
     dispatch(setTodosNotDone(res2));
   };
