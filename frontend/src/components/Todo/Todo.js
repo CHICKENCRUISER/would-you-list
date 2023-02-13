@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getTodosByState } from "../../models/todos.js";
 import TodoBlock from "./TodoBlock";
-import { Stack, Accordion } from "@chakra-ui/react";
+import { Stack, Accordion, Center } from "@chakra-ui/react";
 import AddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
-import SquareCrop from "../Review/SquareCrop.js";
 
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
@@ -41,20 +40,24 @@ const Todo = ({ isDone }) => {
   }, []);
 
   return (
-    <Stack spacing={5}>
-      <Accordion allowToggle>
-        {todos.map((todo) => (
-          <TodoBlock
-            key={todo.id}
-            todo={todo}
-            //setTodos={setTodos}
-            refreshTodos={refreshTodos}
-            isDone={isDone}
-          />
-        ))}
-      </Accordion>
-      {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
-    </Stack>
+      <Stack spacing={5}>
+        {todos.length ? (
+            <Accordion allowToggle>
+              {todos.map((todo) => (
+                  <TodoBlock
+                      key={todo.id}
+                      todo={todo}
+                      //setTodos={setTodos}
+                      refreshTodos={refreshTodos}
+                      isDone={isDone}
+                  />
+              ))}
+            </Accordion>
+        ) : (
+            <Center>Empty</Center>
+        )}
+        {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
+      </Stack>
   );
 };
 
