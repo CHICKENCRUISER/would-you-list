@@ -89,7 +89,7 @@ public class ReviewController {
         review.setExpression(request.getParameter("expression"));
 
         if (file.isEmpty()) {
-            review.setPhotoId(0L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
+            review.setPhotoId(1L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
         } else {
             String originalFilename = file.getOriginalFilename();
             String storedFileName=s3Uploader.upload(file,"images");
@@ -128,7 +128,6 @@ public class ReviewController {
         private String photo;
         private String title;
     }
-
 
 
     @Data
