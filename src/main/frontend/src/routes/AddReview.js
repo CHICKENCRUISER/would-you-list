@@ -14,6 +14,9 @@ import {
   CardHeader,
   Heading,
   StackDivider,
+  Checkbox,
+  Textarea,
+  Badge
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -26,6 +29,18 @@ const AddReview = () => {
   const [place, setPlace] = useState("");
   const [expression, setExpression] = useState("happy");
   const [file, setFile] = useState(null);
+  const [imgSelect, setImgSelect] = useState(false);
+
+  const tagColors = {
+    FOOD: "gray",
+    MOVIE: "red",
+    DRAMA: "orange",
+    ACTIVITY: "yellow",
+    BOOK: "green",
+    MUSIC: "teal",
+    BAKING: "blue",
+    SPORTS: "cyan",
+  };
 
   let todosDone = useSelector((state) => state.todosDone);
   const todo = todosDone.find((todo) => todo.id === Number(id));
@@ -41,6 +56,7 @@ const AddReview = () => {
 
   let navigate = useNavigate();
 
+  const imgCheckChanged = () => { setImgSelect(prev => !prev); }
   const reviewFormSubmitted = async (e) => {
     e.preventDefault();
     const newReview = new FormData();
@@ -79,9 +95,12 @@ const AddReview = () => {
               <Heading size="xs" textTransform="uppercase">
                 CATEGORY
               </Heading>
-              <Text pt="2" fontSize="sm">
+              <Badge
+                colorScheme={tagColors[todo.category]}
+                textAlign="middle"
+              >
                 {todo.category}
-              </Text>
+              </Badge>
             </Box>
             <Box>
               <Heading size="xs" textTransform="uppercase">
@@ -99,22 +118,24 @@ const AddReview = () => {
                   />
                   <Input
                     type="text"
-                    placeholder="review"
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                    mb={4}
-                    required
-                  />
-                  <Input
-                    type="text"
                     placeholder="place"
                     value={place}
                     onChange={(e) => setPlace(e.target.value)}
                     mb={4}
                     required
                   />
-                  <SquareCrop setFile={setFile} />
-                  {/* <input type="file" accept="image/*" onChange={imgInputChanged} /> */}
+                  <Textarea
+                    type="text"
+                    placeholder="review"
+                    value={review}
+                    onChange={(e) => setReview(e.target.value)}
+                    mb={4}
+                    required
+                  />
+                  <Card><CardBody><Stack>
+                    <Checkbox onChange={imgCheckChanged}>이미지 추가하기</Checkbox>
+                    {imgSelect ? <SquareCrop setFile={setFile} /> : null}
+                  </Stack></CardBody></Card>
                   <RadioGroup
                     defaultValue="2"
                     m={4}

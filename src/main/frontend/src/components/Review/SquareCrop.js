@@ -1,7 +1,12 @@
 import React, { useState, useRef } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { Button } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Input,
+  Stack
+} from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 
 const SquareCrop = ({ setFile }) => {
@@ -41,8 +46,8 @@ const SquareCrop = ({ setFile }) => {
   }
 
   return (
-    <div>
-      <input
+    <Stack spacing={4}>
+      <Input
         type="file"
         accept="image/*"
         onChange={(e) => {
@@ -53,13 +58,13 @@ const SquareCrop = ({ setFile }) => {
 
       {isCropperOpen && (
         <>
-          <Button onClick={cropBtnClicked}>Crop</Button>
           <Cropper
             src={inputImage}
             aspectRatio={1}
             crop={onCrop}
             ref={cropperRef}
           />
+          <Center><Button onClick={cropBtnClicked}>Crop</Button></Center>
         </>
       )}
       {(!isCropperOpen && croppedImage) && (
@@ -68,7 +73,7 @@ const SquareCrop = ({ setFile }) => {
           <Button onClick={recropBtnClicked} value="recrop">Recrop</Button>
         </>
       )}
-    </div>
+    </Stack>
   );
 };
 
