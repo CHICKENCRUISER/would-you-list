@@ -20,13 +20,15 @@ const Todo = ({ isDone }) => {
   //isDone이 true면 완료된 Todo 목록을 받아오고 false면 완료되지 않은 Todo 목록을 받아옴
   // const refreshTodos = async () => {
   //   const res = await getTodosByState(isDone);
-  //   //setTodos(res);
+  //   setTodos(res);
   //   isDone ? dispatch(setTodosDone(res)) : dispatch(setTodosNotDone(res));
   // };
 
   const refreshTodos = async () => {
     const res1 = await getTodosByState(true);
     const res2 = await getTodosByState(false);
+    console.log(res1);
+    console.log(res2);
     dispatch(setTodosDone(res1));
     dispatch(setTodosNotDone(res2));
   };
@@ -42,7 +44,6 @@ const Todo = ({ isDone }) => {
 
   return (
     <Box m={0}>
-      <SquareCrop />
       <Accordion allowToggle>
         {todos.map((todo) => (
           <TodoBlock

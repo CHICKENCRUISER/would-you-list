@@ -27,7 +27,7 @@ const ShowReview = () => {
     if (reviewCardRef.current) {
       setHeight(70 + reviewCardRef.current.offsetHeight * (parseInt(id) - 1));
     }
-  }, []);
+  });
 
   //즉시 이동
   useEffect(() => {
@@ -41,11 +41,10 @@ const ShowReview = () => {
   return (
     <div>
       {reviews.map((review) => (
-          <div ref={reviewCardRef} key={review.todo.id}>
-            <ReviewCard data={review} />
-          </div>
-        )
-      )}
+        <div ref={reviewCardRef} key={review.todo.id}>
+          <ReviewCard data={review} />
+        </div>
+      ))}
     </div>
   );
 };
