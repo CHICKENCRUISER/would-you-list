@@ -11,26 +11,27 @@ const getTodos = async () => {
 
 const getTodosByState = async (state) => {
   let result;
+  let response;
 
   switch (state) {
     case "false":
       result = await axios.get(`${url}/todo`);
       return result.data;
     case "true":
-      result = await axios.get(`${url}/doneTodo`);
-      return result.data;
+      response = await axios.get(`${url}/doneTodo`);
+      result = response.data.filter((todo) => {
+        if (todo.review) { return false; }
+        else { return true; }
+      });
+      return result;
     case "reviewed":
-      const response = await axios.get(`${url}/doneTodo`);
+      response = await axios.get(`${url}/doneTodo`);
       result = response.data.filter((todo) => {
         if (todo.review) { return true; }
         else { return false; }
       });
       return result;
   }
-
-  // if (!state) { response = await axios.get(`${url}/todo`); }
-  // else { response = await axios.get(`${url}/doneTodo`); }
-  // return response.data;
 }
 
 const createTodo = async (todo) => {

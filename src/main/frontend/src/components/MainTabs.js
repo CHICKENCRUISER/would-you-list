@@ -7,6 +7,7 @@ import {
   Stack
 } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
+import ReviewedTodo from "./Todo/ReviewedTodo";
 import ReviewGrid from "./Review/ReviewGrid";
 
 //메인 탭
@@ -26,9 +27,10 @@ const MainTabs = () => {
           <Todo isDone={false} />
         </TabPanel>
         <TabPanel>
-          <Stack spacing={5}>
+          <Stack spacing={50}>
             {/* 완료한 리스트 */}
             <Todo isDone={true} />
+            <ReviewedTodo />
           </Stack>
         </TabPanel>
         <TabPanel>
