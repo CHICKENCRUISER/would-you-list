@@ -25,7 +25,6 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final S3Uploader s3Uploader;
 
-
     public ReviewController(TodoService todoService, FileService fileService, ReviewService reviewService, S3Uploader s3Uploader) {
         this.todoService = todoService;
         this.fileService = fileService;
@@ -77,7 +76,7 @@ public class ReviewController {
     //S3에 업로드: https://velog.io/@chaeri93/SpringBoot-AWS-S3로-이미지-업로드하기
     @PostMapping(value = "/review/new")
     @ResponseBody
-    public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam MultipartFile file) throws IOException {
+    public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam(required = false) MultipartFile file) throws IOException {
         Review review = new Review();
         Long todoId = Long.parseLong(request.getParameter("todoId"));
         review.setTodo(todoService.findOne(todoId).get());
@@ -88,7 +87,7 @@ public class ReviewController {
         review.setPlace(request.getParameter("place"));
         review.setExpression(request.getParameter("expression"));
 
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             review.setPhotoId(1L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
         } else {
             String originalFilename = file.getOriginalFilename();
