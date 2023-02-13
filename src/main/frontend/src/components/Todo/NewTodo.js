@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import { createTodo } from "../../models/todos";
-import { FormControl, Input, Select } from "@chakra-ui/react";
+import { FormControl, Input, Select, Textarea } from "@chakra-ui/react";
 
 const NewTodo = ({ closeModal, refreshTodos }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
-  // const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(null);
 
+  const dateInputChanged = (e) => {
+    const { target: { value }} = e;
+    console.log(value);
+    // const arr = value.match(/\d+/g);
+    // const result = `${Number(arr[1])}월 ${Number(arr[2])}일 ${arr[3]>=12 ? "오후" : "오전"} ${arr[3]}:${arr[4]}`;
+    setDate(value);
+  }
   const todoFormSubmitted = async (e) => {
     closeModal();
     e.preventDefault();
     const newTodo = {
       user: "이동섭",
-      date: Date.now(),
+      date,
       name,
       category,
       content,
@@ -54,6 +61,14 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
           <option value="SPORTS">SPORTS</option>
         </Select>
         <Input
+          onChange={dateInputChanged}
+          placeholder="Select Date and Time"
+          size="md"
+          type="datetime-local"
+          mb={4}
+          required
+        />
+        <Textarea
           type="text"
           placeholder="content"
           value={content}

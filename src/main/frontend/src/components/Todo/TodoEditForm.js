@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, Input, Select } from "@chakra-ui/react";
+import { FormControl, Input, Select, Textarea } from "@chakra-ui/react";
 import { updateTodo } from "../../models/todos";
 import { useState } from "react";
 
@@ -11,13 +11,21 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
   const [name, setName] = useState(todo.name);
   const [category, setCategory] = useState(todo.category);
   const [content, setContent] = useState(todo.content);
+  const [date, setDate] = useState(todo.date);
+
+  const dateInputChanged = (e) => {
+    const { target: { value }} = e;
+    // const arr = value.match(/\d+/g);
+    // const result = `${Number(arr[1])}월 ${Number(arr[2])}일 ${arr[3]>=12 ? "오후" : "오전"} ${arr[3]}:${arr[4]}`;
+    setDate(value);
+  }
 
   //EditForm에서 입력받은 값을 서버에 업데이트하는 함수
   const editFormSubmitted = async (e) => {
     e.preventDefault();
     const edittedTodo = {
       user: todo.user,
-      date: todo.date,
+      date,
       name,
       category,
       content,
@@ -59,6 +67,15 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           <option value="SPORTS">SPORTS</option>
         </Select>
         <Input
+          value={date}
+          onChange={dateInputChanged}
+          placeholder="Select Date and Time"
+          size="md"
+          type="datetime-local"
+          mb={4}
+          required
+        />
+        <Textarea
           type="text"
           placeholder="Content"
           value={content}
@@ -66,7 +83,6 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           mb={4}
           required
         />
-
         <Input type="submit" value="Done!" />
       </FormControl>
       <button onClick={toggleEdit}>Cancle</button>
