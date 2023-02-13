@@ -32,7 +32,7 @@ public class TodoController {
     }
 
     @PostMapping(value = "/todo/new")
-    public CreateTodoResponse create(@RequestBody CreateTodoRequest request) {
+    public CreateTodoResponse createTodo(@RequestBody CreateTodoRequest request) {
         //엔티티를 직접 받아오면, 엔티티 검증 정보나 필드명 변경에 취약 -> 별도의 DTO 사용
         Todo todo = new Todo();
         todo.setUser(request.getUser());

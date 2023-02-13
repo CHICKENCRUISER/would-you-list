@@ -35,7 +35,7 @@ public class ReviewController {
 
     @GetMapping("/review")
     @ResponseBody
-    public List<ReadReviewResponse> findAllReview() {
+    public List<ReadReviewResponse> reviewList() {
         List<Review> dataReviews = reviewService.getReviews();
         List<ReadReviewResponse> reviews = new ArrayList<>();
         for (Review dataReview : dataReviews) {
@@ -51,7 +51,7 @@ public class ReviewController {
 
     @GetMapping("/review/thumbnail")
     @ResponseBody
-    public List<ThumbnailReviewResponse> findAllReviewThumbnail() {
+    public List<ThumbnailReviewResponse> reviewThumbnailList() {
         List<Review> dataReviews = reviewService.getReviews();
         List<ThumbnailReviewResponse> reviewThumbnails = new ArrayList<>();
         for (Review dataReview : dataReviews) {
@@ -66,7 +66,7 @@ public class ReviewController {
 
     @GetMapping("/review/{reviewId}")
     @ResponseBody
-    public ReadReviewResponse findReview(@PathVariable Long reviewId) {
+    public ReadReviewResponse reviewOne(@PathVariable Long reviewId) {
         Review dataReview = reviewService.findOne(reviewId).get();
         String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
         return new ReadReviewResponse(dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
@@ -77,7 +77,7 @@ public class ReviewController {
     //S3에 업로드: https://velog.io/@chaeri93/SpringBoot-AWS-S3로-이미지-업로드하기
     @PostMapping(value = "/review/new")
     @ResponseBody
-    public CreateReviewResponse create(HttpServletRequest request, @RequestParam MultipartFile file) throws IOException {
+    public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam MultipartFile file) throws IOException {
         Review review = new Review();
         Long todoId = Long.parseLong(request.getParameter("todoId"));
         review.setTodo(todoService.findOne(todoId).get());
@@ -128,8 +128,7 @@ public class ReviewController {
         private String photo;
         private String title;
     }
-
-
+    
     @Data
     static class CreateReviewRequest {
         private Long todoId; //**주의 필요**
