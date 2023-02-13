@@ -40,24 +40,24 @@ const Todo = ({ isDone }) => {
   }, []);
 
   return (
-    <Stack spacing={5}>
-      {todos.length ? (
-        <Accordion allowToggle>
-          {todos.map((todo) => (
-            <TodoBlock
-              key={todo.id}
-              todo={todo}
-              //setTodos={setTodos}
-              refreshTodos={refreshTodos}
-              isDone={isDone}
-            />
-          ))}
-        </Accordion>
-      ) : (
-        <Center>Empty</Center>
-      )}
-      {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
-    </Stack>
+      <Stack spacing={5}>
+        {todos.length ? (
+            <Accordion allowToggle>
+              {todos.map((todo) => (
+                  <TodoBlock
+                      key={todo.id}
+                      todo={todo}
+                      //setTodos={setTodos}
+                      refreshTodos={refreshTodos}
+                      isDone={isDone}
+                  />
+              ))}
+            </Accordion>
+        ) : (
+            <Center>Empty</Center>
+        )}
+        {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
+      </Stack>
   );
 };
 
