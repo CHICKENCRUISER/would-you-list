@@ -128,7 +128,7 @@ public class ReviewController {
         private String photo;
         private String title;
     }
-    
+
     @Data
     static class CreateReviewRequest {
         private Long todoId; //**주의 필요**
