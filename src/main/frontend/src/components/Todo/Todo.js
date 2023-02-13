@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getTodosByState } from "../../models/todos.js";
 import TodoBlock from "./TodoBlock";
-import { Box, Accordion } from "@chakra-ui/react";
+import { Stack, Accordion } from "@chakra-ui/react";
 import AddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
@@ -27,8 +27,6 @@ const Todo = ({ isDone }) => {
   const refreshTodos = async () => {
     const res1 = await getTodosByState(true);
     const res2 = await getTodosByState(false);
-    console.log(res1);
-    console.log(res2);
     dispatch(setTodosDone(res1));
     dispatch(setTodosNotDone(res2));
   };
@@ -43,7 +41,7 @@ const Todo = ({ isDone }) => {
   }, []);
 
   return (
-    <Box m={0}>
+    <Stack spacing={5}>
       <Accordion allowToggle>
         {todos.map((todo) => (
           <TodoBlock
@@ -56,7 +54,7 @@ const Todo = ({ isDone }) => {
         ))}
       </Accordion>
       {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
-    </Box>
+    </Stack>
   );
 };
 

@@ -29,10 +29,10 @@ public class InitDb {
         private final EntityManager em;
 
         public void DbInit() {
-            Todo todo1 = createTodo("이동섭", "바빌론", "2월 5일 오후 7:30", "MOVIE", "어쩌구저쩌구", false, null);
-            Todo todo2 = createTodo("이동섭", "풋살", "2월 5일 오후 11:00", "SPORTS", "풋살체련 희망자!", false, null);
-            Todo todo3 = createTodo("이동섭", "아바타", "2월 9일 오후 3:30", "MOVIE", "아바타2 보기전", true, null);
-            Todo todo4 = createTodo("이동섭", "신과함께", "1월 1일 오전 12:00", "MOVIE", "주지훈 머시쪙", true, null);
+            Todo todo1 = createTodo("이동섭", "종만북", "2월 5일 오후 7:30", "BOOK", "어쩌구저쩌구", true, null);
+            Todo todo2 = createTodo("이동섭", "풋살", "2월 5일 오후 11:00", "SPORTS", "풋살체련 희망자!", true, null);
+            Todo todo3 = createTodo("이동섭", "아바타", "2월 9일 오후 3:30", "MOVIE", "아바타2 보기전", false, null);
+            Todo todo4 = createTodo("이동섭", "신과함께", "1월 1일 오전 12:00", "MOVIE", "주지훈 머시쪙", false, null);
             em.persist(todo1);
             em.persist(todo2);
             em.persist(todo3);
