@@ -78,9 +78,6 @@ public class ReviewController {
     @ResponseBody
     public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam(required = false) MultipartFile file) throws IOException {
         Review review = new Review();
-        Long todoId = Long.parseLong(request.getParameter("todoId"));
-        review.setTodo(todoService.findOne(todoId).get());
-
         review.setDoneDate(request.getParameter("doneDate"));
         review.setTitle(request.getParameter("title"));
         review.setReview(request.getParameter("review"));
@@ -95,9 +92,14 @@ public class ReviewController {
 
             Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
             review.setPhotoId(fileId);
-
         }
+
         Long id = reviewService.save(review);
+        Review newReview = reviewService.findOne(id).get();
+
+        Long todoId = Long.parseLong(request.getParameter("todoId"));
+        todoService.reviewTodo(todoId, newReview); //다(일)대일 양방향 매핑 상황에서 연관관계의 주인이 Todo이므로
+
         return new CreateReviewResponse(id);
     }
 

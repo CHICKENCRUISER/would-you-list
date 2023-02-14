@@ -1,5 +1,6 @@
 package hello.wouldyoulist.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -23,7 +24,8 @@ public class Todo {
     private Boolean state;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "todo")
+    @OneToOne
+    @JoinColumn(name = "review_id")
     private Review review;
 
     //기본값 세팅 로직

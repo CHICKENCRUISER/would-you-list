@@ -7,6 +7,7 @@ CREATE TABLE todo (
     category varchar(255),
     content varchar(255),
     state boolean default false,
+    review_id bigint,
     primary key (id)
 );
 
@@ -26,7 +27,6 @@ CREATE TABLE review (
     done_date varchar(255),
     place varchar(255),
     expression varchar(255),
-    todo_id bigint,
     photo_id bigint,
     primary key (id)
 );
