@@ -1,6 +1,7 @@
 package hello.wouldyoulist.repository;
 
 import hello.wouldyoulist.domain.Review;
+import hello.wouldyoulist.domain.Todo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,12 +25,14 @@ public class JpaReviewRepository implements ReviewRepository{
     }
 
     public Optional<Review> findById(Long id) {
-        Review review = em.find(Review.class, id);
+        Review review = em.createQuery("select distinct r from Review r left join fetch r.todo where r.id = :id", Review.class)
+                .setParameter("id", id)
+                .getSingleResult();
         return Optional.ofNullable(review);
     }
 
     public List<Review> findAll() {
-        return em.createQuery("select r from Review r", Review.class)
+        return em.createQuery("select distinct r from Review r left join fetch r.todo", Review.class)
                 .getResultList();
     }
 
