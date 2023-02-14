@@ -9,6 +9,7 @@ function App() {
         bg="pink"
         w="100%"
         p={4}
+        mb={4}
         color="white"
         fontSize="2xl"
         height={"70px"}

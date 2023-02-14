@@ -4,7 +4,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Stack
+  Stack,
+  Center
 } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
 import ReviewedTodo from "./Todo/ReviewedTodo";
@@ -14,7 +15,7 @@ import ReviewGrid from "./Review/ReviewGrid";
 //Home => MainTabs
 const MainTabs = () => {
   return (
-    <Tabs defaultIndex={0}>
+    <Tabs defaultIndex={0} align="center" variant='soft-rounded' colorScheme='green'>
       <TabList>
         <Tab>진행중인 리스트</Tab>
         <Tab>완료한 리스트</Tab>
