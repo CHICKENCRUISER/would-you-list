@@ -127,6 +127,18 @@ public class ReviewController {
         return reviewId;
     }
 
+    @PutMapping("/review/{review}")
+    public UpdateReviewResponse updateReview(
+            @PathVariable Long reviewId,
+            @RequestBody UpdateReviewRequest request,
+            @RequestParam(required = false) MultipartFile file) throws IOException{
+
+        reviewService.updateReview(reviewId, request.getTitle(), request.getReview(), request.getDoneDate(),
+                request.getPlace(), request.getExpression()); //커맨드(수정)와
+        Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
+        return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
+    }
+
     @Data
     static class ReadReviewResponse {
         private Todo todo;
@@ -173,6 +185,18 @@ public class ReviewController {
         public CreateReviewResponse(Long id) {
             this.id = id;
         }
+    }
+
+    @Data
+    static class UpdateReviewRequest {
+        private Long todoId; //**주의 필요**
+        private String doneDate;
+        private String title;
+        private String review;
+        private String place;
+        private String expression;
+
+        private MultipartFile file;
     }
 
     @Data
