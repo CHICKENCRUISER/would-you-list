@@ -1,3 +1,6 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { deleteReview } from "../../models/reviews";
 import {
   Card,
   CardHeader,
@@ -11,11 +14,32 @@ import {
   IconButton,
   Image,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
-import { PhoneIcon, AddIcon, WarningIcon } from "@chakra-ui/icons";
+import {
+  PhoneIcon,
+  AddIcon,
+  WarningIcon,
+  ChevronDownIcon,
+  HamburgerIcon,
+  EditIcon,
+  SmallCloseIcon
+} from "@chakra-ui/icons";
 
 //리뷰 카드 컴포넌트
 const ReviewCard = ({ data }) => {
+
+  const navigate = useNavigate();
+  const deleteBtnClicked = async () => {
+    try {
+      await deleteReview(data.todo.review.id);
+      navigate("/review");
+    } catch (e) { console.error(e); }
+  }
+
   return (
     <div
       style={{
@@ -36,12 +60,19 @@ const ReviewCard = ({ data }) => {
               </Box>
             </Flex>
             {/* 이걸 나중에 수정버튼으로 쓰자구 */}
-            <IconButton
-              variant="ghost"
-              colorScheme="gray"
-              aria-label="See menu"
-              icon={<AddIcon />}
-            />
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label='Options'
+                icon={<HamburgerIcon />}
+                variant='ghost'
+                colorScheme="gray"
+              />
+              <MenuList>
+                <MenuItem icon={<EditIcon />}>수정</MenuItem>
+                <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>삭제</MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
         </CardHeader>
         <CardBody>
