@@ -48,7 +48,7 @@ public class InitDb {
         }
 
         public void fileDbInit() {
-            UploadFile defaultPhoto = new UploadFile("defaultPhoto.jpeg", "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/1e64424c-5f9a-4032-a8d8-78d5f2af4b27defaultPhoto.jpeg");
+            UploadFile defaultPhoto = new UploadFile("defaultPhoto.jpeg", "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/51bcb6cd-16b8-4ceb-9622-5fde24e51ac9defaultPhoto.jpeg");
             em.persist(defaultPhoto);
         }
 

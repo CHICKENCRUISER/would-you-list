@@ -25,4 +25,8 @@ public class FileService {
     public Optional<UploadFile> findOne(Long fileId) {
         return fileRepository.findById(fileId);
     }
+
+    public void deleteFile(Long fileId) {
+        fileRepository.delete(fileId);
+    }
 }

@@ -1,5 +1,6 @@
 package hello.wouldyoulist.service;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -66,5 +67,17 @@ public class S3Uploader {
         }
 
         return Optional.empty();
+    }
+
+    //파일 삭제
+    public void deleteFile(String fileUrl) {
+        String fileKey = fileUrl.substring(57);
+        try {
+            amazonS3Client.deleteObject(bucket, fileKey);
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
+        }
+        System.out.println(String.format("[%s] deletion complete", fileKey));
     }
 }
