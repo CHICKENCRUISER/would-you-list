@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @RestController
 public class ReviewController {
 
@@ -100,15 +102,6 @@ public class ReviewController {
         return new CreateReviewResponse(id);
     }
 
-//    @PutMapping(value = "/review/{reviewId}")
-//    public UpdateReviewResponse updateReview(
-//            @PathVariable Long reviewId,
-//            HttpServletRequest request,
-//            @RequestParam(required = false) MultipartFile file) {
-//
-//
-//    }
-
     @DeleteMapping(value = "/review/{reviewId}")
     public Long deleteReview(@PathVariable Long reviewId) {
         Review review = reviewService.findOne(reviewId).get();
@@ -125,6 +118,54 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
 
         return reviewId;
+    }
+
+    @PutMapping("/review/{reviewId}")
+    public UpdateReviewResponse updateReview(
+            @PathVariable Long reviewId,
+            HttpServletRequest request,
+            @RequestParam(required = false) MultipartFile file,
+            @RequestParam Boolean isDeleted
+            ) throws IOException{
+
+        reviewService.updateReview(reviewId, request.getParameter("title"), request.getParameter("review"), request.getParameter("doneDate"),
+                request.getParameter("place"), request.getParameter("expression")); //커맨드(수정)와
+        Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
+
+        if(isDeleted || request.getParameter("isDeleted")=="true"){
+            System.out.println("isDeleted");
+            Long photoId = findReview.getPhotoId();
+            if (photoId != 1) {
+                System.out.println("photoId");
+                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                fileService.deleteFile(photoId);
+            }
+            System.out.println(findReview.getTitle());
+            System.out.println(findReview.getPhotoId());
+            reviewService.updateReviewPhotoId(reviewId, 1L); //사진 삭제 요청 시 기본이미지로 변경
+            System.out.println(findReview.getPhotoId());
+
+        }
+        else{
+            System.out.println("else isDeleted");
+            if (!(file == null || file.isEmpty())) { // 요청으로 파일이 들어온다면
+                System.out.println("file!=null");
+                //1.Amazon S3에서 파일 삭제
+                //2.UploadFile 객체 삭제
+                Long photoId = findReview.getPhotoId();
+                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                fileService.deleteFile(photoId);
+
+                //3.Amazon S3에서 파일 생성
+                //4.UploadFile 객체 생성
+                String originalFilename = file.getOriginalFilename();
+                String storedFileName=s3Uploader.upload(file,"images");
+
+                Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
+                reviewService.updateReviewPhotoId(reviewId, fileId); // table에 photoId 업데이트
+            }
+        }
+        return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
 
     @Data
@@ -173,6 +214,18 @@ public class ReviewController {
         public CreateReviewResponse(Long id) {
             this.id = id;
         }
+    }
+
+    @Data
+    static class UpdateReviewRequest {
+        private Long todoId; //**주의 필요**
+        private String doneDate;
+        private String title;
+        private String review;
+        private String place;
+        private String expression;
+
+        private MultipartFile file;
     }
 
     @Data

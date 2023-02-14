@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +44,22 @@ public class ReviewService {
         todo.setReview(null);
 
         reviewRepository.delete(reviewId);
+    }
+
+    @Transactional
+    public void updateReview(Long reviewId,  String title, String review, String doneDate, String place, String expression){
+        Review findReview = reviewRepository.findById(reviewId).get();
+        findReview.setTitle(title);
+        findReview.setReview(review);
+        findReview.setDoneDate(doneDate);
+        findReview.setPlace(place);
+        findReview.setExpression(expression);
+    }
+
+    @Transactional
+    public void updateReviewPhotoId(Long reviewId, Long photoId){
+        Review findReview = reviewRepository.findById(reviewId).get();
+        findReview.setPhotoId(photoId);
+
     }
 }
