@@ -6,6 +6,7 @@ import AddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
+import MainTabs from "../MainTabs.js";
 
 //Todo 목록을 보여주는 컴포넌트
 //Home => MainTabs => Todo
@@ -40,24 +41,26 @@ const Todo = ({ isDone }) => {
   }, []);
 
   return (
+    <>
       <Stack spacing={5}>
         {todos.length ? (
-            <Accordion allowToggle>
-              {todos.map((todo) => (
-                  <TodoBlock
-                      key={todo.id}
-                      todo={todo}
-                      //setTodos={setTodos}
-                      refreshTodos={refreshTodos}
-                      isDone={isDone}
-                  />
-              ))}
-            </Accordion>
+          <Accordion allowToggle>
+            {todos.map((todo) => (
+              <TodoBlock
+                key={todo.id}
+                todo={todo}
+                //setTodos={setTodos}
+                refreshTodos={refreshTodos}
+                isDone={isDone}
+              />
+            ))}
+          </Accordion>
         ) : (
-            <Center>Empty</Center>
+          <Center>Empty</Center>
         )}
         {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
       </Stack>
+    </>
   );
 };
 

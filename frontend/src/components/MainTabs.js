@@ -19,7 +19,6 @@ const MainTabs = () => {
       <TabList>
         <Tab>진행중인 리스트</Tab>
         <Tab>완료한 리스트</Tab>
-        <Tab>리뷰</Tab>
       </TabList>
 
       <TabPanels>
@@ -33,11 +32,6 @@ const MainTabs = () => {
             <Todo isDone={true} />
             <ReviewedTodo />
           </Stack>
-        </TabPanel>
-        <TabPanel>
-          {/* 리뷰 */}
-          {/* <Review /> */}
-          <ReviewGrid />
         </TabPanel>
       </TabPanels>
     </Tabs>
