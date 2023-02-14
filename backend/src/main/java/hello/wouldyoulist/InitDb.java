@@ -38,10 +38,13 @@ public class InitDb {
             em.persist(todo3);
             em.persist(todo4);
 
-            Review review1 = createReview(todo1, 1L, "코딩테스트 대비 최고의 책!", "알기 쉽게 설명이 되어있어서 정말 도움이 많이 됐어요~", "2월 13일 오후 2:24", "스타벅스", "happy");
-            Review review2 = createReview(todo2, 1L, "풋살은 역시 비올때 해야 제맛!", "하지만 다리가 부러졌어요 ㅠㅠ", "1월 31일 오전 11:12", "풋살장", "sad");
+            Review review1 = createReview(1L, "코딩테스트 대비 최고의 책!", "알기 쉽게 설명이 되어있어서 정말 도움이 많이 됐어요~", "2월 13일 오후 2:24", "스타벅스", "happy");
+            Review review2 = createReview(1L, "풋살은 역시 비올때 해야 제맛!", "하지만 다리가 부러졌어요 ㅠㅠ", "1월 31일 오전 11:12", "풋살장", "sad");
             em.persist(review1);
             em.persist(review2);
+
+            todo1.setReview(review1);
+            todo2.setReview(review2);
         }
 
         public void fileDbInit() {
@@ -61,9 +64,8 @@ public class InitDb {
             return todo;
         }
 
-        private static Review createReview(Todo todo, Long photoId, String title, String review, String doneDate, String place, String expression) {
+        private static Review createReview(Long photoId, String title, String review, String doneDate, String place, String expression) {
             Review newReview = new Review();
-            newReview.setTodo(todo);
             newReview.setPhotoId(photoId);
             newReview.setTitle(title);
             newReview.setReview(review);

@@ -1,5 +1,6 @@
 package hello.wouldyoulist.service;
 
+import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.domain.Todo;
 import hello.wouldyoulist.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class TodoService {
         findTodo.setDate(date);
         findTodo.setCategory(category);
         findTodo.setContent(content);
+    }
+
+    @Transactional
+    public void reviewTodo(Long todoId, Review review) {
+        Todo findTodo = todoRepository.findById(todoId).get();
+        findTodo.setReview(review);
     }
 
     @Transactional

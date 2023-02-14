@@ -2,6 +2,7 @@ package hello.wouldyoulist.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -17,8 +18,7 @@ public class Review {
     private Long id;
 
     @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "todo_id")
+    @OneToOne(mappedBy = "review")
     private Todo todo;
 
     private Long photoId;
