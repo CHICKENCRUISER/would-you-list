@@ -5,6 +5,7 @@ import hello.wouldyoulist.domain.UploadFile;
 import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.service.*;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class ReviewController {
 
     private final TodoService todoService;
@@ -33,7 +34,6 @@ public class ReviewController {
     }
 
     @GetMapping("/review")
-    @ResponseBody
     public List<ReadReviewResponse> reviewList() {
         List<Review> dataReviews = reviewService.getReviews();
         List<ReadReviewResponse> reviews = new ArrayList<>();
@@ -49,7 +49,6 @@ public class ReviewController {
     }
 
     @GetMapping("/review/thumbnail")
-    @ResponseBody
     public List<ThumbnailReviewResponse> reviewThumbnailList() {
         List<Review> dataReviews = reviewService.getReviews();
         List<ThumbnailReviewResponse> reviewThumbnails = new ArrayList<>();
@@ -64,7 +63,6 @@ public class ReviewController {
     }
 
     @GetMapping("/review/{reviewId}")
-    @ResponseBody
     public ReadReviewResponse reviewOne(@PathVariable Long reviewId) {
         Review dataReview = reviewService.findOne(reviewId).get();
         String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
@@ -75,12 +73,8 @@ public class ReviewController {
     //참고 링크: https://velog.io/@dhk22/ToyProject-1-SpringBoot를-이용한-파일-업로드에-JPA적용-시키기
     //S3에 업로드: https://velog.io/@chaeri93/SpringBoot-AWS-S3로-이미지-업로드하기
     @PostMapping(value = "/review/new")
-    @ResponseBody
     public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam(required = false) MultipartFile file) throws IOException {
         Review review = new Review();
-        Long todoId = Long.parseLong(request.getParameter("todoId"));
-        review.setTodo(todoService.findOne(todoId).get());
-
         review.setDoneDate(request.getParameter("doneDate"));
         review.setTitle(request.getParameter("title"));
         review.setReview(request.getParameter("review"));
@@ -95,10 +89,42 @@ public class ReviewController {
 
             Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
             review.setPhotoId(fileId);
-
         }
+
         Long id = reviewService.save(review);
+        Review newReview = reviewService.findOne(id).get();
+
+        Long todoId = Long.parseLong(request.getParameter("todoId"));
+        todoService.reviewTodo(todoId, newReview); //다(일)대일 양방향 매핑 상황에서 연관관계의 주인이 Todo이므로
+
         return new CreateReviewResponse(id);
+    }
+
+//    @PutMapping(value = "/review/{reviewId}")
+//    public UpdateReviewResponse updateReview(
+//            @PathVariable Long reviewId,
+//            HttpServletRequest request,
+//            @RequestParam(required = false) MultipartFile file) {
+//
+//
+//    }
+
+    @DeleteMapping(value = "/review/{reviewId}")
+    public Long deleteReview(@PathVariable Long reviewId) {
+        Review review = reviewService.findOne(reviewId).get();
+
+        //1.Amazon S3에서 파일 삭제
+        //2.UploadFile 객체 삭제
+        Long photoId = review.getPhotoId();
+        if (photoId != 1) {
+            s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+            fileService.deleteFile(photoId);
+        }
+        //3.Todo 객체의 review 필드 삭제
+        //4.Review 객체 삭제
+        reviewService.deleteReview(reviewId);
+
+        return reviewId;
     }
 
     @Data
@@ -147,6 +173,13 @@ public class ReviewController {
         public CreateReviewResponse(Long id) {
             this.id = id;
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateReviewResponse {
+        private Long id;
+        private String title;
     }
 
 }

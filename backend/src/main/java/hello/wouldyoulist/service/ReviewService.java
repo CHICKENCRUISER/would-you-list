@@ -35,4 +35,13 @@ public class ReviewService {
     public Optional<Review> findOne(Long reviewId) {
         return reviewRepository.findById(reviewId);
     }
+
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).get();
+        Todo todo = review.getTodo();
+        todo.setReview(null);
+
+        reviewRepository.delete(reviewId);
+    }
 }
