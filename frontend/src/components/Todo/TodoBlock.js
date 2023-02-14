@@ -42,7 +42,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
   };
 
   return (
-    <AccordionItem>
+    <AccordionItem margin={2}>
       <h2>
         <AccordionButton>
           <Checkbox
