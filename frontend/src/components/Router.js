@@ -4,7 +4,8 @@ import Home from "../routes/Home";
 import AddReview from "../routes/AddReview";
 import ShowReview from "./Review/ShowReview";
 import Header from "./Header";
-import ReviewGrid from "./Review/ReviewGrid";
+import ReviewMain from "../routes/ReviewMain";
+import TodoMain from "../routes/TodoMain";
 
 
 const AppRouter = () => {
@@ -14,7 +15,8 @@ const AppRouter = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/review" element={<ReviewGrid />} />
+          <Route path="/todo" element={<TodoMain />} />
+          <Route path="/review" element={<ReviewMain />} />
           <Route path="/review/new/:id" element={<AddReview />} />
           <Route path="/review/:id" element={<ShowReview />} />
           <Route path="*" element={<div>없는페이지임</div>} />

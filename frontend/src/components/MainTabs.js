@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
 import ReviewedTodo from "./Todo/ReviewedTodo";
-import ReviewGrid from "./Review/ReviewGrid";
+import ReviewGrid from "../routes/ReviewMain";
 
 //메인 탭
 //Home => MainTabs

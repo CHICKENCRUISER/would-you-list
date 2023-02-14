@@ -3,12 +3,12 @@ import MainTabs from "../components/MainTabs";
 import { Box, Button, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const TodoMain = () => {
   return (
     <div>
-      어서오세용
+      <MainTabs />
     </div>
   );
 };
 
-export default Home;
+export default TodoMain;

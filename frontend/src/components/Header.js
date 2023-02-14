@@ -8,19 +8,33 @@ const Header = () => {
 
   return (
     <Box
-      bg="pink"
+      bg="burlywood"
       w="100%"
       p={4}
       mb={4}
       color="white"
-      fontSize="2xl"
       height="70px"
     >
-      WouldYou List
+      <Button
+        colorScheme="white"
+        variant="ghost"
+        fontSize="2xl"
+        onClick={() => { navigate("/"); }}
+      >WouldYou List</Button>
       {/* <Box align="right"> */}
-      <Button colorScheme="white" variant="ghost" align="end" onClick={() => { navigate("/"); }}>Todo</Button>
+      <Button
+        colorScheme="white"
+        variant="ghost"
+        align="end"
+        onClick={() => { navigate("/todo"); }}
+      >Todo</Button>
       {/* <Divider orientation="vertical" /> */}
-      <Button colorScheme="white" variant="ghost" align="end" onClick={() => { navigate("/review"); }}>Review</Button>
+      <Button
+        colorScheme="white"
+        variant="ghost"
+        align="end"
+        onClick={() => { navigate("/review"); }}
+      >Review</Button>
       {/* </Box> */}
     </Box>
   )
