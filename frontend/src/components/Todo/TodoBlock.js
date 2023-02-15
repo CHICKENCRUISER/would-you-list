@@ -11,6 +11,7 @@ import {
 import EditForm from "./TodoEditForm";
 import ShowTodoContent from "./TodoBlockOptions";
 import { toggleTodoState } from "../../models/todos";
+import TodoBlockOptions from "./TodoBlockOptions";
 
 //Todo 한블럭 생성 컴포넌트
 //Home => MainTabs => Todo => TodoBlock
@@ -41,7 +42,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
   };
 
   return (
-    <AccordionItem>
+    <AccordionItem margin={2}>
       <h2>
         <AccordionButton>
           <Checkbox
@@ -71,7 +72,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
             toggleEdit={toggleEdit}
           />
         ) : (
-          <ShowTodoContent
+          <TodoBlockOptions
             todo={todo}
             refreshTodos={refreshTodos}
             toggleEdit={toggleEdit}

@@ -69,7 +69,7 @@ const AddReview = () => {
     newReview.append("file", file);
     
     await createReview(newReview);
-    navigate("/");
+    navigate("/review");
   };
 
   return (

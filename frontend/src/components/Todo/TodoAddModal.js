@@ -14,12 +14,11 @@ import NewTodo from "./NewTodo";
 
 //투두리스트 추가하기 모달 컴포넌트
 //Home => MainTabs => Todo => AddModal
-function AddModal({ refreshTodos }) {
+function TodoAddModal({ refreshTodos }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen}>투두 리스트 추가하기</Button>
-
+      <Button variant="outline" onClick={onOpen}>투두 리스트 추가하기</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -36,4 +35,4 @@ function AddModal({ refreshTodos }) {
   );
 }
 
-export default AddModal;
+export default TodoAddModal;

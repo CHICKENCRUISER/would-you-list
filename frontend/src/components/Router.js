@@ -1,18 +1,28 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Home from "../routes/Home";
 import AddReview from "../routes/AddReview";
 import ShowReview from "./Review/ShowReview";
+import Header from "./Header";
+import ReviewMain from "../routes/ReviewMain";
+import TodoMain from "../routes/TodoMain";
+
+
 const AppRouter = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/review/new/:id" element={<AddReview />} />
-        <Route path="/review/:id" element={<ShowReview />} />
-        <Route path="*" element={<div>없는페이지임</div>} />
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/todo" element={<TodoMain />} />
+          <Route path="/review" element={<ReviewMain />} />
+          <Route path="/review/new/:id" element={<AddReview />} />
+          <Route path="/review/:id" element={<ShowReview />} />
+          <Route path="*" element={<div>없는페이지임</div>} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 

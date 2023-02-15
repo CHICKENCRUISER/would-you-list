@@ -1,11 +1,13 @@
 // import reviewDummyData from "./reviewDummyData";
 import React, { useState, useEffect } from "react";
-import { getReviews } from "../../models/reviews";
+import { getReviews } from "../models/reviews";
 import { SimpleGrid, Card, CardBody, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+
+
 //그리드 형식으로 리뷰를 보여주는 컴포넌트
 //화면 너비에 따라서 카드의 갯수가 달라짐
-const ReviewGrid = ({ reviewToggleEdit }) => {
+const ReviewMain = ({ reviewToggleEdit }) => {
 
   const [reviews, setReviews] = useState([]);
 
@@ -50,4 +52,4 @@ const ReviewGrid = ({ reviewToggleEdit }) => {
   );
 };
 
-export default ReviewGrid;
+export default ReviewMain;

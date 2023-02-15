@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getTodosByState } from "../../models/todos.js";
 import TodoBlock from "./TodoBlock";
-import { Stack, Accordion, Center } from "@chakra-ui/react";
-import AddModal from "./TodoAddModal";
+import { Stack, Accordion, Center, Card } from "@chakra-ui/react";
+import TodoAddModal from "./TodoAddModal";
 import { useSelector, useDispatch } from "react-redux";
 import {} from "react-redux";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
@@ -40,24 +40,28 @@ const Todo = ({ isDone }) => {
   }, []);
 
   return (
+    <>
       <Stack spacing={5}>
-        {todos.length ? (
+        <Card height="500px" variant="filled" bgColor="whitesmoke">
+          {todos.length ? (
             <Accordion allowToggle>
               {todos.map((todo) => (
-                  <TodoBlock
-                      key={todo.id}
-                      todo={todo}
-                      //setTodos={setTodos}
-                      refreshTodos={refreshTodos}
-                      isDone={isDone}
-                  />
+                <TodoBlock
+                  key={todo.id}
+                  todo={todo}
+                  //setTodos={setTodos}
+                  refreshTodos={refreshTodos}
+                  isDone={isDone}
+                />
               ))}
             </Accordion>
-        ) : (
-            <Center>Empty</Center>
-        )}
-        {isDone ? null : <AddModal refreshTodos={refreshTodos} />}
+          ) : (
+            <Center textColor="white" fontSize="2xl" height="500px">Empty</Center>
+          )}
+        </Card>
+        {isDone ? null : <TodoAddModal refreshTodos={refreshTodos} />}
       </Stack>
+    </>
   );
 };
 

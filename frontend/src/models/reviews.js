@@ -18,4 +18,9 @@ const createReview = async (review) => {
   return res.data;
 }
 
-export { getReviews, createReview };
+const deleteReview = async (id) => {
+  const res = await axios.delete(`${url}/review/${id}`);
+  return res.data;
+}
+
+export { getReviews, createReview, deleteReview };

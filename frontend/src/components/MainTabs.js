@@ -9,17 +9,15 @@ import {
 } from "@chakra-ui/react";
 import Todo from "./Todo/Todo";
 import ReviewedTodo from "./Todo/ReviewedTodo";
-import ReviewGrid from "./Review/ReviewGrid";
 
 //메인 탭
 //Home => MainTabs
 const MainTabs = () => {
   return (
-    <Tabs defaultIndex={0} align="center" variant='soft-rounded' colorScheme='green'>
+    <Tabs defaultIndex={0} align="center" variant='soft-rounded' colorScheme='yellow'>
       <TabList>
         <Tab>진행중인 리스트</Tab>
         <Tab>완료한 리스트</Tab>
-        <Tab>리뷰</Tab>
       </TabList>
 
       <TabPanels>
@@ -33,11 +31,6 @@ const MainTabs = () => {
             <Todo isDone={true} />
             <ReviewedTodo />
           </Stack>
-        </TabPanel>
-        <TabPanel>
-          {/* 리뷰 */}
-          {/* <Review /> */}
-          <ReviewGrid />
         </TabPanel>
       </TabPanels>
     </Tabs>
