@@ -2,6 +2,7 @@ package hello.wouldyoulist.controller;
 
 import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.domain.Todo;
+import hello.wouldyoulist.domain.dto.TodoDto;
 import hello.wouldyoulist.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static hello.wouldyoulist.domain.dto.TodoDto.*;
 
 @RestController
 public class TodoController {
@@ -69,40 +72,5 @@ public class TodoController {
     public Long deleteTodo(@PathVariable Long todoId) {
         todoService.deleteTodo(todoId);
         return todoId;
-    }
-
-    @Data
-    static class CreateTodoRequest {
-        private String user;
-        private String name;
-        private String date;
-        private String category;
-        private String content;
-        private Boolean state;
-    }
-
-    @Data
-    public class CreateTodoResponse {
-        private Long id;
-
-        public CreateTodoResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class UpdateTodoRequest {
-        private String user;
-        private String name;
-        private String date;
-        private String category;
-        private String content;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateTodoResponse {
-        private Long id;
-        private String user;
     }
 }

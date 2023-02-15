@@ -3,6 +3,7 @@ package hello.wouldyoulist.controller;
 import hello.wouldyoulist.domain.Todo;
 import hello.wouldyoulist.domain.UploadFile;
 import hello.wouldyoulist.domain.Review;
+import hello.wouldyoulist.domain.dto.ReviewDto;
 import hello.wouldyoulist.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static hello.wouldyoulist.domain.dto.ReviewDto.*;
+
 
 @RestController
 public class ReviewController {
@@ -39,7 +43,7 @@ public class ReviewController {
         List<ReadReviewResponse> reviews = new ArrayList<>();
         for (Review dataReview : dataReviews) {
             String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
-            ReadReviewResponse review = new ReadReviewResponse(dataReview.getTodo(), photoUrl,
+            ReadReviewResponse review = new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl,
                     dataReview.getDoneDate(), dataReview.getTitle(), dataReview.getReview(),
                     dataReview.getPlace(), dataReview.getExpression());
 
@@ -66,7 +70,7 @@ public class ReviewController {
     public ReadReviewResponse reviewOne(@PathVariable Long reviewId) {
         Review dataReview = reviewService.findOne(reviewId).get();
         String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
-        return new ReadReviewResponse(dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
+        return new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
                 dataReview.getTitle(), dataReview.getReview(), dataReview.getPlace(), dataReview.getExpression());
     }
 
@@ -100,15 +104,6 @@ public class ReviewController {
         return new CreateReviewResponse(id);
     }
 
-//    @PutMapping(value = "/review/{reviewId}")
-//    public UpdateReviewResponse updateReview(
-//            @PathVariable Long reviewId,
-//            HttpServletRequest request,
-//            @RequestParam(required = false) MultipartFile file) {
-//
-//
-//    }
-
     @DeleteMapping(value = "/review/{reviewId}")
     public Long deleteReview(@PathVariable Long reviewId) {
         Review review = reviewService.findOne(reviewId).get();
@@ -127,59 +122,51 @@ public class ReviewController {
         return reviewId;
     }
 
-    @Data
-    static class ReadReviewResponse {
-        private Todo todo;
-        private String photo;
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
+    @PutMapping("/review/{reviewId}")
+    public UpdateReviewResponse updateReview(
+            @PathVariable Long reviewId,
+            HttpServletRequest request,
+            @RequestParam(required = false) MultipartFile file,
+            @RequestParam Boolean isDeleted
+            ) throws IOException{
 
-        public ReadReviewResponse(Todo todo, String photo, String doneDate, String title, String review, String place, String expression) {
-            this.todo = todo;
-            this.photo = photo;
-            this.doneDate = doneDate;
-            this.title = title;
-            this.review = review;
-            this.place = place;
-            this.expression = expression;
+        reviewService.updateReview(reviewId, request.getParameter("title"), request.getParameter("review"), request.getParameter("doneDate"),
+                request.getParameter("place"), request.getParameter("expression")); //커맨드(수정)와
+        Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
+
+        if(isDeleted || request.getParameter("isDeleted")=="true"){
+            System.out.println("isDeleted");
+            Long photoId = findReview.getPhotoId();
+            if (photoId != 1) {
+                System.out.println("photoId");
+                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                fileService.deleteFile(photoId);
+            }
+            System.out.println(findReview.getTitle());
+            System.out.println(findReview.getPhotoId());
+            reviewService.updateReviewPhotoId(reviewId, 1L); //사진 삭제 요청 시 기본이미지로 변경
+            System.out.println(findReview.getPhotoId());
+
         }
-    }
+        else{
+            System.out.println("else isDeleted");
+            if (!(file == null || file.isEmpty())) { // 요청으로 파일이 들어온다면
+                System.out.println("file!=null");
+                //1.Amazon S3에서 파일 삭제
+                //2.UploadFile 객체 삭제
+                Long photoId = findReview.getPhotoId();
+                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                fileService.deleteFile(photoId);
 
-    @Data
-    static class ThumbnailReviewResponse {
-        private String photo;
-        private String title;
-    }
+                //3.Amazon S3에서 파일 생성
+                //4.UploadFile 객체 생성
+                String originalFilename = file.getOriginalFilename();
+                String storedFileName=s3Uploader.upload(file,"images");
 
-    @Data
-    static class CreateReviewRequest {
-        private Long todoId; //**주의 필요**
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
-
-        private MultipartFile file;
-    }
-
-    @Data
-    static class CreateReviewResponse {
-        private Long id;
-
-        public CreateReviewResponse(Long id) {
-            this.id = id;
+                Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
+                reviewService.updateReviewPhotoId(reviewId, fileId); // table에 photoId 업데이트
+            }
         }
+        return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateReviewResponse {
-        private Long id;
-        private String title;
-    }
-
 }
