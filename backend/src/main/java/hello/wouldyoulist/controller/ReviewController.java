@@ -133,29 +133,44 @@ public class ReviewController {
         reviewService.updateReview(reviewId, request.getParameter("title"), request.getParameter("review"), request.getParameter("doneDate"),
                 request.getParameter("place"), request.getParameter("expression")); //커맨드(수정)와
         Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
+        Long photoId = findReview.getPhotoId();
 
-        if(isDeleted){
-            Long photoId = findReview.getPhotoId();
-            if (photoId != 1) {
-                //Case A, C 공통: 기본이미지가 아니라면 기존 파일 삭제
-                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
-                fileService.deleteFile(photoId);
+        if(file == null || file.isEmpty()){
+            // Case A: file false && del true
+            if(isDeleted){
+                if (photoId != 1) {
+                    // 기존 이미지 삭제
+                    s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                    fileService.deleteFile(photoId);
+
+                    // 기본 이미지로 변경
+                    reviewService.updateReviewPhotoId(reviewId, 1L);
+                }
             }
-            if (file == null || file.isEmpty()) {
-                //Case A (기존 파일이 삭제되고, 새로운 파일이 안날라올 경우)
-                //기본이미지로 변경
-                reviewService.updateReviewPhotoId(reviewId, 1L);
-            } else {
-                //Case C (기존 파일이 삭제되고, 새로운 파일이 날라올 경우)
-                //새로운 파일 업로드
+            // Case B: file false && del false
+            // 유지
+        }
+        else{
+            // Case C: file true && del true
+            // if(isDeleted){
+                if (photoId != 1) {
+                    // 기존 이미지 삭제
+                    s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
+                    fileService.deleteFile(photoId);
+                }
+                // 새로운 파일 업로드
                 String originalFilename = file.getOriginalFilename();
                 String storedFileName=s3Uploader.upload(file,"images");
                 Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
                 reviewService.updateReviewPhotoId(reviewId, fileId); // table에 photoId 업데이트
-            }
+            // }
+            // Case D: file true && del false 원래는 추가가 맞음. 지금은 사진 하나라 변경점 X
+//            else{
+//
+//
+//            }
         }
-        //Case B (기존 파일이 그대로 날라올 경우)
-        //아무런 처리도 필요 X
+
 
         return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
