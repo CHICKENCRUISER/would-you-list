@@ -134,39 +134,29 @@ public class ReviewController {
                 request.getParameter("place"), request.getParameter("expression")); //커맨드(수정)와
         Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
 
-        if(isDeleted || request.getParameter("isDeleted")=="true"){
-            System.out.println("isDeleted");
+        if(isDeleted){
             Long photoId = findReview.getPhotoId();
             if (photoId != 1) {
-                System.out.println("photoId");
+                //Case A, C 공통: 기본이미지가 아니라면 기존 파일 삭제
                 s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
                 fileService.deleteFile(photoId);
             }
-            System.out.println(findReview.getTitle());
-            System.out.println(findReview.getPhotoId());
-            reviewService.updateReviewPhotoId(reviewId, 1L); //사진 삭제 요청 시 기본이미지로 변경
-            System.out.println(findReview.getPhotoId());
-
-        }
-        else{
-            System.out.println("else isDeleted");
-            if (!(file == null || file.isEmpty())) { // 요청으로 파일이 들어온다면
-                System.out.println("file!=null");
-                //1.Amazon S3에서 파일 삭제
-                //2.UploadFile 객체 삭제
-                Long photoId = findReview.getPhotoId();
-                s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
-                fileService.deleteFile(photoId);
-
-                //3.Amazon S3에서 파일 생성
-                //4.UploadFile 객체 생성
+            if (file == null || file.isEmpty()) {
+                //Case A (기존 파일이 삭제되고, 새로운 파일이 안날라올 경우)
+                //기본이미지로 변경
+                reviewService.updateReviewPhotoId(reviewId, 1L);
+            } else {
+                //Case C (기존 파일이 삭제되고, 새로운 파일이 날라올 경우)
+                //새로운 파일 업로드
                 String originalFilename = file.getOriginalFilename();
                 String storedFileName=s3Uploader.upload(file,"images");
-
                 Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
                 reviewService.updateReviewPhotoId(reviewId, fileId); // table에 photoId 업데이트
             }
         }
+        //Case B (기존 파일이 그대로 날라올 경우)
+        //아무런 처리도 필요 X
+
         return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
 }
