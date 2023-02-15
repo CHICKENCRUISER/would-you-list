@@ -3,6 +3,7 @@ package hello.wouldyoulist.controller;
 import hello.wouldyoulist.domain.Todo;
 import hello.wouldyoulist.domain.UploadFile;
 import hello.wouldyoulist.domain.Review;
+import hello.wouldyoulist.domain.dto.ReviewDto;
 import hello.wouldyoulist.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static hello.wouldyoulist.domain.dto.ReviewDto.*;
 
 
 @RestController
@@ -41,7 +43,7 @@ public class ReviewController {
         List<ReadReviewResponse> reviews = new ArrayList<>();
         for (Review dataReview : dataReviews) {
             String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
-            ReadReviewResponse review = new ReadReviewResponse(dataReview.getTodo(), photoUrl,
+            ReadReviewResponse review = new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl,
                     dataReview.getDoneDate(), dataReview.getTitle(), dataReview.getReview(),
                     dataReview.getPlace(), dataReview.getExpression());
 
@@ -68,7 +70,7 @@ public class ReviewController {
     public ReadReviewResponse reviewOne(@PathVariable Long reviewId) {
         Review dataReview = reviewService.findOne(reviewId).get();
         String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
-        return new ReadReviewResponse(dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
+        return new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
                 dataReview.getTitle(), dataReview.getReview(), dataReview.getPlace(), dataReview.getExpression());
     }
 
@@ -167,72 +169,4 @@ public class ReviewController {
         }
         return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
-
-    @Data
-    static class ReadReviewResponse {
-        private Todo todo;
-        private String photo;
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
-
-        public ReadReviewResponse(Todo todo, String photo, String doneDate, String title, String review, String place, String expression) {
-            this.todo = todo;
-            this.photo = photo;
-            this.doneDate = doneDate;
-            this.title = title;
-            this.review = review;
-            this.place = place;
-            this.expression = expression;
-        }
-    }
-
-    @Data
-    static class ThumbnailReviewResponse {
-        private String photo;
-        private String title;
-    }
-
-    @Data
-    static class CreateReviewRequest {
-        private Long todoId; //**주의 필요**
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
-
-        private MultipartFile file;
-    }
-
-    @Data
-    static class CreateReviewResponse {
-        private Long id;
-
-        public CreateReviewResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-    @Data
-    static class UpdateReviewRequest {
-        private Long todoId; //**주의 필요**
-        private String doneDate;
-        private String title;
-        private String review;
-        private String place;
-        private String expression;
-
-        private MultipartFile file;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class UpdateReviewResponse {
-        private Long id;
-        private String title;
-    }
-
 }
