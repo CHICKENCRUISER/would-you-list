@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { createTodo } from "../models/todos";
-import { createReview } from "../models/reviews";
+import { updateReview } from "../models/reviews";
 import {
   FormControl,
   Input,
@@ -16,20 +15,28 @@ import {
   StackDivider,
   Checkbox,
   Textarea,
-  Badge
+  Badge,
+  Image,
+  Button
 } from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ReviewImgForm from "../components/Review/ReviewImgForm";
+import SquareCrop from "../components/Review/ReviewImgForm";
 
-const AddReview = () => {
+const EditReview = () => {
+  const defaultImg = "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/51bcb6cd-16b8-4ceb-9622-5fde24e51ac9defaultPhoto.jpeg";
+  const location = useLocation();
+  const { state: { data } } = location;
+  console.log(data);
+
   let { id } = useParams();
-  const [title, setTitle] = useState("");
-  const [review, setReview] = useState("");
-  const [place, setPlace] = useState("");
-  const [expression, setExpression] = useState("happy");
-  const [file, setFile] = useState(null);
-  const [imgSelect, setImgSelect] = useState(false);
+  const [title, setTitle] = useState(data.title);
+  const [review, setReview] = useState(data.review);
+  const [place, setPlace] = useState(data.place);
+  const [expression, setExpression] = useState(data.expression);
+  const [file, setFile] = useState(data.photo !== defaultImg ? data.photo : null);
+  const [imgSelect, setImgSelect] = useState(data.photo!==defaultImg ? true : false);
+  const [isChanged, setIsChanged] = useState(false);
 
   const tagColors = {
     FOOD: "gray",
@@ -45,15 +52,6 @@ const AddReview = () => {
   let todosDone = useSelector((state) => state.todosDone);
   const todo = todosDone.find((todo) => todo.id === Number(id));
 
-  // const imgInputChanged = (e) => {
-  //   e.preventDefault();
-  //   if (e.target.files) {
-  //     const uploadFile = e.target.files[0];
-  //     console.log(uploadFile);
-  //     setFile(uploadFile);
-  //   }
-  // }
-
   let navigate = useNavigate();
 
   const imgCheckChanged = () => { setImgSelect(prev => !prev); }
@@ -68,7 +66,7 @@ const AddReview = () => {
     newReview.append("todoId", todo.id);
     newReview.append("file", file);
     
-    await createReview(newReview);
+    await updateReview(newReview);
     navigate("/review");
   };
 
@@ -77,7 +75,7 @@ const AddReview = () => {
       <Card>
         <CardHeader>
           <Heading size="md" textAlign={"center"}>
-            "{todo.name}"에 대한 멋진 리뷰를 남겨 주세요!
+            "{data.todo.name}"에 대한 멋진 리뷰를 남겨 주세요!
           </Heading>
         </CardHeader>
 
@@ -88,7 +86,7 @@ const AddReview = () => {
                 TODO
               </Heading>
               <Text pt="2" fontSize="sm">
-                {todo.name}
+                {data.todo.name}
               </Text>
             </Box>
             <Box>
@@ -96,10 +94,10 @@ const AddReview = () => {
                 CATEGORY
               </Heading>
               <Badge
-                colorScheme={tagColors[todo.category]}
+                colorScheme={tagColors[data.todo.category]}
                 textAlign="middle"
               >
-                {todo.category}
+                {data.todo.category}
               </Badge>
             </Box>
             <Box>
@@ -132,12 +130,16 @@ const AddReview = () => {
                     mb={4}
                     required
                   />
-
-                  <Card><CardBody><Stack>
-                    <Checkbox defaultChecked={true} onChange={imgCheckChanged}>기본 이미지 사용</Checkbox>
-                    {imgSelect ? <ReviewImgForm setFile={setFile} /> : null}
-                  </Stack></CardBody></Card>
-                  
+                  <Card><CardBody><Box>
+                    <Checkbox defaultChecked={!imgSelect} onChange={imgCheckChanged} mb={2}>기본 이미지 사용</Checkbox>
+                    {(imgSelect && !isChanged) ? (
+                      <>
+                        <Image src={file ? file : defaultImg} alt="current image" width="150px" height="150px" mt={2} mb={2} />
+                        <Button colorScheme="blue" onClick={() => { setIsChanged(true); }}>Change</Button>
+                      </>
+                    ) : null}
+                    {(imgSelect && isChanged) ? <SquareCrop setFile={setFile} /> : null}
+                  </Box></CardBody></Card>
                   <RadioGroup
                     defaultValue="2"
                     m={4}
@@ -167,4 +169,4 @@ const AddReview = () => {
   );
 };
 
-export default AddReview;
+export default EditReview;

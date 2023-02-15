@@ -55,9 +55,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
           </Box>
           <Badge
             colorScheme={tagColors[todo.category]}
-            w="90px"
             textAlign="middle"
-            fontSize="lg"
           >
             {todo.category}
           </Badge>

@@ -18,9 +18,18 @@ const createReview = async (review) => {
   return res.data;
 }
 
+const updateReview = async (id, review) => {
+  const res = await axios.put(`${url}/review/${id}`, review, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+  return res.data;
+}
+
 const deleteReview = async (id) => {
   const res = await axios.delete(`${url}/review/${id}`);
   return res.data;
 }
 
-export { getReviews, createReview, deleteReview };
+export { getReviews, createReview, updateReview, deleteReview };
