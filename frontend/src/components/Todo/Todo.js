@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { getTodosByState } from "../../models/todos.js";
-import TodoBlock from "./TodoBlock";
-import { Stack, Accordion, Center, Card } from "@chakra-ui/react";
-import TodoAddModal from "./TodoAddModal";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {} from "react-redux";
+import { getTodosByState } from "../../models/todos.js";
+import { Stack, Accordion, Center, Card } from "@chakra-ui/react";
 import { setTodosNotDone, setTodosDone } from "../../store.js";
 
-//Todo 목록을 보여주는 컴포넌트
-//Home => MainTabs => Todo
+import TodoBlock from "./TodoBlock";
+import TodoAddModal from "./TodoAddModal";
+
+
 const Todo = ({ isDone }) => {
-  //const [todos, setTodos] = useState([]);
+
   const dispatch = useDispatch();
   let todosNotDone = useSelector((state) => state.todosNotDone);
   let todosDone = useSelector((state) => state.todosDone);
-
-  //Todo 목록을 서버에서 받아오는 함수
-  //isDone이 true면 완료된 Todo 목록을 받아오고 false면 완료되지 않은 Todo 목록을 받아옴
-  // const refreshTodos = async () => {
-  //   const res = await getTodosByState(isDone);
-  //   setTodos(res);
-  //   isDone ? dispatch(setTodosDone(res)) : dispatch(setTodosNotDone(res));
-  // };
 
   const refreshTodos = async () => {
     const res1 = await getTodosByState("true");
@@ -49,7 +40,6 @@ const Todo = ({ isDone }) => {
                 <TodoBlock
                   key={todo.id}
                   todo={todo}
-                  //setTodos={setTodos}
                   refreshTodos={refreshTodos}
                   isDone={isDone}
                 />

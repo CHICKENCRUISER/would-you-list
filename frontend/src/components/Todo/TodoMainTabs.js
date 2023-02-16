@@ -5,14 +5,12 @@ import {
   Tab,
   TabPanel,
   Stack,
-  Center
 } from "@chakra-ui/react";
-import Todo from "./Todo/Todo";
-import ReviewedTodo from "./Todo/ReviewedTodo";
+import Todo from "./Todo";
+import ReviewedTodo from "./ReviewedTodo";
 
-//메인 탭
-//Home => MainTabs
-const MainTabs = () => {
+
+const TodoMainTabs = () => {
   return (
     <Tabs defaultIndex={0} align="center" variant='soft-rounded' colorScheme='yellow'>
       <TabList>
@@ -27,8 +25,9 @@ const MainTabs = () => {
         </TabPanel>
         <TabPanel>
           <Stack spacing={50}>
-            {/* 완료한 리스트 */}
+            {/* 리뷰 작성 안된 완료 투두 */}
             <Todo isDone={true} />
+            {/* 리뷰 작성된 완료 투두 */}
             <ReviewedTodo />
           </Stack>
         </TabPanel>
@@ -37,4 +36,4 @@ const MainTabs = () => {
   );
 };
 
-export default MainTabs;
+export default TodoMainTabs;

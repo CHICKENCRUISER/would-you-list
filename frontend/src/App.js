@@ -1,9 +1,9 @@
 import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 import AppRouter from "./components/Router";
-import { useNavigate } from "react-router-dom";
-import { ChakraProvider, Box, Button } from "@chakra-ui/react";
 
-function App() {
+
+const App = () => {
   return (
     <ChakraProvider>
       <AppRouter />

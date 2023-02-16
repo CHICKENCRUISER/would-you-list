@@ -35,7 +35,7 @@ const ReviewCard = ({ data }) => {
   const navigate = useNavigate();
   const deleteBtnClicked = async () => {
     try {
-      await deleteReview(data.todo.review.id);
+      await deleteReview(data.id);
       navigate("/review");
     } catch (e) { console.error(e); }
   }
@@ -69,8 +69,11 @@ const ReviewCard = ({ data }) => {
                 colorScheme="gray"
               />
               <MenuList>
-                <MenuItem icon={<EditIcon />}>수정</MenuItem>
-                <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>삭제</MenuItem>
+                <MenuItem
+                  icon={<EditIcon />}
+                  onClick={() => { navigate(`/review/edit/${data.id}`, { state: { data } }) }}
+                >리뷰 수정</MenuItem>
+                <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>리뷰 삭제</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -78,7 +81,7 @@ const ReviewCard = ({ data }) => {
         <CardBody>
           <Text>{data.review}</Text>
         </CardBody>
-        <Image objectFit="cover" src={data.photo} alt="Chakra UI" />
+        <Image objectFit="cover" src={data.photo} alt="Chakra UI" width="600px" height="600px" />
 
         {/* 아래 코드는 카드 하단 인데 사실 쓸모는 없지만 혹시 몰라서 남겨둠 */}
         <CardFooter

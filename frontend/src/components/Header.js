@@ -4,6 +4,7 @@ import { Box, Button } from "@chakra-ui/react";
 
 
 const Header = () => {
+
   const navigate = useNavigate();
 
   return (
@@ -15,27 +16,29 @@ const Header = () => {
       color="white"
       height="70px"
     >
+      {/* Home 버튼 */}
       <Button
         colorScheme="white"
         variant="ghost"
         fontSize="2xl"
         onClick={() => { navigate("/"); }}
       >WouldYou List</Button>
-      {/* <Box align="right"> */}
+
+      {/* Todo 버튼 */}
       <Button
         colorScheme="white"
         variant="ghost"
         align="end"
         onClick={() => { navigate("/todo"); }}
       >Todo</Button>
-      {/* <Divider orientation="vertical" /> */}
+      
+      {/* Review 버튼 */}
       <Button
         colorScheme="white"
         variant="ghost"
         align="end"
         onClick={() => { navigate("/review"); }}
       >Review</Button>
-      {/* </Box> */}
     </Box>
   )
 }
