@@ -17,26 +17,28 @@ import {
   Textarea,
   Badge,
   Image,
-  Button
+  Button,
+  IconButton
 } from "@chakra-ui/react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SquareCrop from "../components/Review/ReviewImgForm";
+import ReviewImgForm from "../components/Review/ReviewImgForm";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 
 const EditReview = () => {
   const defaultImg = "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/51bcb6cd-16b8-4ceb-9622-5fde24e51ac9defaultPhoto.jpeg";
   const location = useLocation();
   const { state: { data } } = location;
-  console.log(data);
+  const flag = (data.photo!==defaultImg);
 
   let { id } = useParams();
   const [title, setTitle] = useState(data.title);
   const [review, setReview] = useState(data.review);
   const [place, setPlace] = useState(data.place);
   const [expression, setExpression] = useState(data.expression);
-  const [file, setFile] = useState(data.photo !== defaultImg ? data.photo : null);
-  const [imgSelect, setImgSelect] = useState(data.photo!==defaultImg ? true : false);
-  const [isChanged, setIsChanged] = useState(false);
+  const [file, setFile] = useState(null);
+  const [imgSelect, setImgSelect] = useState(flag ? true : false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const tagColors = {
     FOOD: "gray",
@@ -63,11 +65,14 @@ const EditReview = () => {
     newReview.append("place", place);
     newReview.append("doneDate", Date.now());
     newReview.append("expression", expression);
-    newReview.append("todoId", todo.id);
-    newReview.append("file", file);
+    newReview.append("todoId", data.todo.id);
+    newReview.append("file", imgSelect ? file : null);
+    let state = false;
+    if (flag && (isDeleted || !imgSelect)) { state = true; }
+    newReview.append("isDeleted", state);
     
-    await updateReview(newReview);
-    navigate("/review");
+    await updateReview(data.todo.id, newReview);
+    navigate(`/review/${data.id}`);
   };
 
   return (
@@ -131,14 +136,48 @@ const EditReview = () => {
                     required
                   />
                   <Card><CardBody><Box>
-                    <Checkbox defaultChecked={!imgSelect} onChange={imgCheckChanged} mb={2}>기본 이미지 사용</Checkbox>
-                    {(imgSelect && !isChanged) ? (
+                    <Checkbox defaultChecked={imgSelect} onChange={imgCheckChanged}>사진 추가하기</Checkbox>
+                    {imgSelect ? (
                       <>
-                        <Image src={file ? file : defaultImg} alt="current image" width="150px" height="150px" mt={2} mb={2} />
-                        <Button colorScheme="blue" onClick={() => { setIsChanged(true); }}>Change</Button>
+                        {flag ? (
+                          <>
+                            {isDeleted ? (
+                              <ReviewImgForm setFile={setFile} />
+                            ) : (
+                              <>
+                                <Image src={data.photo} alt="current image" width="150px" height="150px" mt={2} mb={2} />
+                                <IconButton
+                                  align="left"
+                                  mr={1}
+                                  colorScheme="red"
+                                  icon={<SmallCloseIcon />}
+                                  onClick={() => { setIsDeleted(true); }}
+                                />
+                              </>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {isDeleted ? null : (
+                              <ReviewImgForm setFile={setFile} />
+                            )}
+                          </>
+                        )}
                       </>
                     ) : null}
-                    {(imgSelect && isChanged) ? <SquareCrop setFile={setFile} /> : null}
+                    {/* {(imgSelect && file && !isDeleted) ? (
+                      <>
+                        <Image src={file} alt="current image" width="150px" height="150px" mt={2} mb={2} />
+                        <IconButton
+                          align="left"
+                          mr={1}
+                          colorScheme="red"
+                          icon={<SmallCloseIcon />}
+                          onClick={() => { setIsDeleted(true); }}
+                        />
+                      </>
+                    ) : null}
+                    {(imgSelect&&file&&isDeleted) || (imgSelect&&!file) || (imgSelect&&file) ? <ReviewImgForm setFile={setFile} /> : null} */}
                   </Box></CardBody></Card>
                   <RadioGroup
                     defaultValue="2"
@@ -157,7 +196,7 @@ const EditReview = () => {
                   </RadioGroup>
                   <Stack spacing={2}>
                     <Input type="submit" value="Done!" />
-                    <Input type="button" value="Cancle" onClick={() => navigate("/todo")} />
+                    <Input type="button" value="Cancle" onClick={() => navigate(`/review/${data.id}`)} />
                   </Stack>
                 </FormControl>
               </form>

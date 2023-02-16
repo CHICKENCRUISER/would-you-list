@@ -13,6 +13,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 
+
 const ReviewImgForm = ({ setFile }) => {
 
   const fileInput = useRef();
@@ -54,14 +55,17 @@ const ReviewImgForm = ({ setFile }) => {
   }
 
   return (
-    <Box spacing={4}>
+    <Box spacing={4} mt={2}>
       <Input
         ref={fileInput}
         mb={4}
         type="file"
         accept="image/*"
         onChange={(e) => {
-          if (e.target.files) { setInputImage(URL.createObjectURL(e.target.files[0])); }
+          if (e.target.files) {
+            setInputImage(URL.createObjectURL(e.target.files[0]));
+            setFile(e.target.files[0]);
+          }
           // setIsCropperOpen(true);
         }}
       />

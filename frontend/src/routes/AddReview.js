@@ -134,7 +134,7 @@ const AddReview = () => {
                   />
 
                   <Card><CardBody><Stack>
-                    <Checkbox defaultChecked={true} onChange={imgCheckChanged}>기본 이미지 사용</Checkbox>
+                    <Checkbox defaultChecked={false} onChange={imgCheckChanged}>사진 추가하기</Checkbox>
                     {imgSelect ? <ReviewImgForm setFile={setFile} /> : null}
                   </Stack></CardBody></Card>
                   
