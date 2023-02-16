@@ -26,7 +26,7 @@ import ReviewImgForm from "../components/Review/ReviewImgForm";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 
 const EditReview = () => {
-  const defaultImg = "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/51bcb6cd-16b8-4ceb-9622-5fde24e51ac9defaultPhoto.jpeg";
+  const defaultImg = "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg";
   const location = useLocation();
   const { state: { data } } = location;
   const flag = (data.photo!==defaultImg);
