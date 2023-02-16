@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Header from "./Header";
 import Home from "../routes/Home";
 import AddReview from "../routes/AddReview";
 import ShowReview from "./Review/ShowReview";
-import Header from "./Header";
 import ReviewMain from "../routes/ReviewMain";
 import TodoMain from "../routes/TodoMain";
 import EditReview from "../routes/EditReview";
@@ -21,7 +22,7 @@ const AppRouter = () => {
           <Route path="/review/new/:id" element={<AddReview />} />
           <Route path="/review/edit/:id" element={<EditReview />} />
           <Route path="/review/:id" element={<ShowReview />} />
-          <Route path="*" element={<div>없는페이지임</div>} />
+          <Route path="*" element={<div>여기 아니에요</div>} />
         </Routes>
       </Router>
     </>

@@ -1,14 +1,9 @@
 import React from "react";
-import MainTabs from "../components/MainTabs";
-import { Box, Button, Divider } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import TodoMainTabs from "../components/Todo/TodoMainTabs";
+
 
 const TodoMain = () => {
-  return (
-    <div>
-      <MainTabs />
-    </div>
-  );
+  return <TodoMainTabs />
 };
 
 export default TodoMain;
