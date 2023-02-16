@@ -155,7 +155,7 @@ const AddReview = () => {
                   </RadioGroup>
                   <Stack spacing={2}>
                     <Input type="submit" value="Done!" />
-                    <Input type="button" value="Cancle" onClick={() => navigate("/todo")} />
+                    <Input type="button" value="Cancel" onClick={() => navigate("/todo")} />
                   </Stack>
                 </FormControl>
               </form>
