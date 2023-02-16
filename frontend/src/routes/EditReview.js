@@ -196,7 +196,7 @@ const EditReview = () => {
                   </RadioGroup>
                   <Stack spacing={2}>
                     <Input type="submit" value="Done!" />
-                    <Input type="button" value="Cancle" onClick={() => navigate(`/review/${data.id}`)} />
+                    <Input type="button" value="Cancel" onClick={() => navigate(`/review/${data.id}`)} />
                   </Stack>
                 </FormControl>
               </form>

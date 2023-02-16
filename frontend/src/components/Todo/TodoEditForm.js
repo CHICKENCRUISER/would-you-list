@@ -85,7 +85,7 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           />
           <Input type="submit" value="Done!" />
         </FormControl>
-        <button onClick={toggleEdit}>Cancle</button>
+        <button onClick={toggleEdit}>Cancel</button>
       </form>
   );
 };
