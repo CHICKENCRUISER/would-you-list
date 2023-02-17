@@ -147,7 +147,7 @@ public class ReviewController {
             // Case B: file false && del false
             // 기존 이미지 유지
         }
-        else
+        else{
 //            if(isDeleted)
             // Case C: file true && del true
             if (photoId != 1) {
@@ -162,6 +162,7 @@ public class ReviewController {
             reviewService.updateReviewPhotoId(reviewId, fileId); // table에 photoId 업데이트
 //            else
             // Case D: file true && del false 원래는 추가가 맞음. 지금은 사진 하나라 변경점 X
+        }
 
         return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
     }
