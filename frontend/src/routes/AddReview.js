@@ -63,16 +63,26 @@ const AddReview = () => {
     setImgSelect((prev) => !prev);
   };
   const reviewFormSubmitted = async (e) => {
+    const now = new Date();
+    const options = {
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    const formattedDate = now.toLocaleString("ko-KR", options);
+
     e.preventDefault();
     const newReview = new FormData();
     newReview.append("title", title);
     newReview.append("review", review);
     newReview.append("place", place);
-    newReview.append("doneDate", Date.now());
+    newReview.append("doneDate", formattedDate);
     newReview.append("expression", expression);
     newReview.append("todoId", todo.id);
     newReview.append("file", file);
-
+    console.log(Date.now());
     await createReview(newReview);
     navigate("/review");
   };

@@ -78,7 +78,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             height="150px"
             mb={1}
           />
-          {/* <IconButton
+          <IconButton
             align="left"
             mr={1}
             colorScheme="red"
@@ -87,7 +87,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
               setInputImage(null);
               fileInput.current.value = "";
             }}
-          /> */}
+          />
           <Button
             colorScheme="teal"
             onClick={() => {
@@ -125,6 +125,17 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             }}
             mr={1}
           /> */}
+          <IconButton
+            align="left"
+            mr={1}
+            colorScheme="red"
+            icon={<SmallCloseIcon />}
+            onClick={() => {
+              setCroppedImage(null);
+              setInputImage(null);
+              fileInput.current.value = "";
+            }}
+          />
           <Button onClick={recropBtnClicked} value="recrop">
             다시 자르기
           </Button>
