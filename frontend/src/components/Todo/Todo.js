@@ -7,9 +7,7 @@ import { setTodosNotDone, setTodosDone } from "../../store.js";
 import TodoBlock from "./TodoBlock";
 import TodoAddModal from "./TodoAddModal";
 
-
 const Todo = ({ isDone }) => {
-
   const dispatch = useDispatch();
   let todosNotDone = useSelector((state) => state.todosNotDone);
   let todosDone = useSelector((state) => state.todosDone);
@@ -33,7 +31,7 @@ const Todo = ({ isDone }) => {
   return (
     <>
       <Stack spacing={5}>
-        <Card height="500px" variant="filled" bgColor="whitesmoke">
+        <Card minHeight="500px" pxvariant="filled" bgColor="whitesmoke">
           {todos.length ? (
             <Accordion allowToggle>
               {todos.map((todo) => (
@@ -46,7 +44,9 @@ const Todo = ({ isDone }) => {
               ))}
             </Accordion>
           ) : (
-            <Center textColor="white" fontSize="2xl" height="500px">Empty</Center>
+            <Center textColor="white" fontSize="2xl" height="500px">
+              Empty
+            </Center>
           )}
         </Card>
         {isDone ? null : <TodoAddModal refreshTodos={refreshTodos} />}
