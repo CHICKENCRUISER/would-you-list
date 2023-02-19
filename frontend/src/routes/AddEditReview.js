@@ -23,24 +23,28 @@ import {
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ReviewAddModal from "../components/Review/ReviewAddModal";
 
+//리뷰 추가와 리뷰 수정을 처리하는 컴포넌트
 const AddEditReview = () => {
+  //기본 이미지
   const defaultImg =
     "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg";
+  //상위 컴포넌트에서 넘겨받은 데이터
+  //리뷰 추가이면 빈 객체(단, todo데이터는 들어있음), 리뷰 수정이면 수정할 리뷰 데이터
   const location = useLocation();
   const {
     state: { data },
   } = location;
-  console.log(data);
   //리뷰 추가이면 false, 리뷰 수정이면 true
   let isEdit = data.title ? true : false;
 
-  let { id } = useParams();
+  // let { id } = useParams();
   const [title, setTitle] = useState(data.title);
   const [review, setReview] = useState(data.review);
   const [place, setPlace] = useState(data.place);
   const [expression, setExpression] = useState(data.expression);
   const [file, setFile] = useState(null);
-  const [imgSelect, setImgSelect] = useState(false);
+  // const [imgSelect, setImgSelect] = useState(false);
+  //데이터 속 이미지가 defaultImg와 같으면 inputImage를 null, 아니면 이미지 경로를 넣어줌
   const [inputImage, setInputImage] = useState(
     data.photo === defaultImg ? null : data.photo
   );
@@ -73,7 +77,9 @@ const AddEditReview = () => {
   //   const imgCheckChanged = () => {
   //     setImgSelect((prev) => !prev);
   //   };
+  //done버튼을 누르면 데이터베이스로 데이터를 보냄
   const reviewFormSubmitted = async (e) => {
+    //날짜 포맷을 바꿔줌
     const now = new Date();
     const options = {
       month: "long",
@@ -93,6 +99,7 @@ const AddEditReview = () => {
     newReview.append("expression", expression);
     newReview.append("todoId", data.todo.id);
     newReview.append("file", file);
+    //리뷰 추가이면 createReview, 리뷰 수정이면 updateReview
     if (!isEdit) {
       await createReview(newReview);
       navigate("/review");

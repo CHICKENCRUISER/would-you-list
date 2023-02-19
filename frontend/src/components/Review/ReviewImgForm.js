@@ -13,8 +13,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 
+//이미지 업로드 및 크롭 컴포넌트
 const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
-  const fileInput = useRef();
+  const fileInput = useRef(null);
+  console.log("fileInput", fileInput);
   const cropperRef = useRef(null);
   // User-uploaded image
   // const [inputImage, setInputImage] = useState(null);
@@ -36,6 +38,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
     return new File([u8arr], fileName, { type: mime });
   };
 
+  // 크롭 버튼 클릭 시 실행되는 크롭 함수
   const onCrop = () => {
     const imageElement = cropperRef?.current;
     const cropper = imageElement?.cropper;
@@ -44,6 +47,8 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
     setCroppedImage(resultURL);
     setFile(resultFile);
   };
+
+  //크롭 함수 실행 중인지 확인하는 함수들
   const cropBtnClicked = () => {
     // save the croppedImage data URL however you need
     setIsCropperOpen(false);
@@ -54,6 +59,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
 
   return (
     <Box spacing={4} mt={2}>
+      {/* 이미지를 파일에서 선택하는 버튼 */}
       <Input
         ref={fileInput}
         mb={4}
@@ -68,7 +74,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
           // setIsCropperOpen(true);
         }}
       />
-
+      {/* 인풋이미지가 있고, 크롭이 열려있지 않고, 크롭된 이미지가 없다면 */}
       {inputImage && !isCropperOpen && !croppedImage ? (
         <>
           <Image
@@ -78,6 +84,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             height="150px"
             mb={1}
           />
+          {/* 이미지 삭제 버튼 */}
           <IconButton
             align="left"
             mr={1}
@@ -88,18 +95,23 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
               fileInput.current.value = "";
             }}
           />
-          <Button
-            colorScheme="teal"
-            onClick={() => {
-              setIsCropperOpen(true);
-            }}
-          >
-            사진 자르기
-          </Button>
+          {/* 이미지 크롭 버튼 */}
+          {/* 만약 리뷰 수정인데 이미지가 있다면 크롭 버튼이 보이지 않음 */}
+          {fileInput.current ? (
+            <Button
+              colorScheme="teal"
+              onClick={() => {
+                setIsCropperOpen(true);
+              }}
+            >
+              사진 자르기
+            </Button>
+          ) : null}
+          {/* 이미지 업로드 완료 버튼 */}
           <Button onClick={closeModal}>완료</Button>
         </>
       ) : null}
-
+      {/* 크롭중이라면 */}
       {isCropperOpen && (
         <>
           <Cropper

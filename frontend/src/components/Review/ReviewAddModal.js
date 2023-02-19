@@ -12,8 +12,7 @@ import {
 import { useDisclosure } from "@chakra-ui/hooks";
 import ReviewImgForm from "./ReviewImgForm";
 
-//투두리스트 추가하기 모달 컴포넌트
-//Home => MainTabs => Todo => AddModal
+//사진 추가 모달
 function ReviewAddModal({ setFile, inputImage, setInputImage }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
