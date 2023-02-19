@@ -30,14 +30,14 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
       <Box align="right">
         {isDone ? (
           <>
-            <Button
+            {/* <Button
               leftIcon={<EditIcon />}
               onClick={() => navigate(`/review/new/${todo.id}`)}
               colorScheme="blue"
               size="xs"
             >
               리뷰 작성
-            </Button>
+            </Button> */}
             <Button
               leftIcon={<EditIcon />}
               onClick={() =>
@@ -46,7 +46,7 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
               colorScheme="blue"
               size="xs"
             >
-              리뷰 작성2
+              리뷰 작성
             </Button>
           </>
         ) : null}

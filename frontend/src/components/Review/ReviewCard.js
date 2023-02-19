@@ -81,14 +81,14 @@ const ReviewCard = ({ data }) => {
                 <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>
                   리뷰 삭제
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                   icon={<EditIcon />}
                   onClick={() => {
                     navigate(`/review/edit2/${data.id}`, { state: { data } });
                   }}
                 >
                   리뷰 수정2
-                </MenuItem>
+                </MenuItem> */}
               </MenuList>
             </Menu>
           </Flex>
