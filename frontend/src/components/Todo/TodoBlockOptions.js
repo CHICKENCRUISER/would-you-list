@@ -1,9 +1,8 @@
 import { Button } from "@chakra-ui/button";
 import { EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import { Box } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react";
 import { deleteTodo } from "../../models/todos";
 import { useNavigate } from "react-router-dom";
-
 
 const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
   const deleteBtnClicked = async () => {
@@ -15,20 +14,41 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
     }
   };
   let navigate = useNavigate();
+  const data = {
+    todo: todo,
+    title: "",
+    review: "",
+    place: "",
+    expression: "happy",
+    file: null,
+    photo: null,
+  };
 
   return (
     <>
       <div align="left"> {todo.content}</div>
       <Box align="right">
         {isDone ? (
-          <Button
-            leftIcon={<EditIcon />}
-            onClick={() => navigate(`/review/new/${todo.id}`)}
-            colorScheme="blue"
-            size="xs"
-          >
-            리뷰 작성
-          </Button>
+          <>
+            <Button
+              leftIcon={<EditIcon />}
+              onClick={() => navigate(`/review/new/${todo.id}`)}
+              colorScheme="blue"
+              size="xs"
+            >
+              리뷰 작성
+            </Button>
+            <Button
+              leftIcon={<EditIcon />}
+              onClick={() =>
+                navigate(`/review/new/${todo.id}`, { state: { data } })
+              }
+              colorScheme="blue"
+              size="xs"
+            >
+              리뷰 작성2
+            </Button>
+          </>
         ) : null}
         <Button
           leftIcon={<EditIcon />}
@@ -46,6 +66,13 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
         >
           Delete
         </Button>
+        <button
+          onClick={() => {
+            console.log(todo);
+          }}
+        >
+          Delete
+        </button>
       </Box>
     </>
   );

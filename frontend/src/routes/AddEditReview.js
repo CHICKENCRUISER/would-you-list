@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { createTodo } from "../models/todos";
 import { updateReview } from "../models/reviews";
+import { createReview } from "../models/reviews";
+
 import {
   FormControl,
   Input,
@@ -13,19 +16,14 @@ import {
   CardHeader,
   Heading,
   StackDivider,
-  Checkbox,
   Textarea,
   Badge,
   Image,
-  Button,
-  IconButton,
 } from "@chakra-ui/react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import ReviewImgForm from "../components/Review/ReviewImgForm";
-import { SmallCloseIcon } from "@chakra-ui/icons";
+import ReviewAddModal from "../components/Review/ReviewAddModal";
 
-const EditReview = () => {
+const AddEditReview = () => {
   const defaultImg =
     "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg";
   const location = useLocation();
@@ -33,8 +31,8 @@ const EditReview = () => {
     state: { data },
   } = location;
   console.log(data);
-  //기존 사진이 있으면 true, 없으면 false
-  const flag = data.photo !== defaultImg;
+  //리뷰 추가이면 false, 리뷰 수정이면 true
+  let isEdit = data.title ? true : false;
 
   let { id } = useParams();
   const [title, setTitle] = useState(data.title);
@@ -42,8 +40,10 @@ const EditReview = () => {
   const [place, setPlace] = useState(data.place);
   const [expression, setExpression] = useState(data.expression);
   const [file, setFile] = useState(null);
-  const [imgSelect, setImgSelect] = useState(flag ? true : false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [imgSelect, setImgSelect] = useState(false);
+  const [inputImage, setInputImage] = useState(
+    data.photo === defaultImg ? null : data.photo
+  );
 
   const tagColors = {
     FOOD: "gray",
@@ -56,14 +56,23 @@ const EditReview = () => {
     SPORTS: "cyan",
   };
 
-  // let todosDone = useSelector((state) => state.todosDone);
-  // const todo = todosDone.find((todo) => todo.id === Number(id));
+  //   let todosDone = useSelector((state) => state.todosDone);
+  //   const todo = todosDone.find((todo) => todo.id === Number(id));
+
+  // const imgInputChanged = (e) => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const uploadFile = e.target.files[0];
+  //     console.log(uploadFile);
+  //     setFile(uploadFile);
+  //   }
+  // }
 
   let navigate = useNavigate();
 
-  const imgCheckChanged = () => {
-    setImgSelect((prev) => !prev);
-  };
+  //   const imgCheckChanged = () => {
+  //     setImgSelect((prev) => !prev);
+  //   };
   const reviewFormSubmitted = async (e) => {
     const now = new Date();
     const options = {
@@ -83,16 +92,17 @@ const EditReview = () => {
     newReview.append("doneDate", formattedDate);
     newReview.append("expression", expression);
     newReview.append("todoId", data.todo.id);
-    newReview.append("file", imgSelect ? file : null);
-
-    let state = false;
-    if (flag && (isDeleted || !imgSelect)) {
-      state = true;
+    newReview.append("file", file);
+    if (!isEdit) {
+      await createReview(newReview);
+      navigate("/review");
+    } else {
+      let state = data.photo !== inputImage;
+      console.log(state);
+      newReview.append("isDeleted", state);
+      await updateReview(data.todo.id, newReview);
+      navigate(`/review/${data.id}`);
     }
-    newReview.append("isDeleted", state);
-
-    await updateReview(data.todo.id, newReview);
-    navigate(`/review/${data.id}`);
   };
 
   return (
@@ -155,68 +165,37 @@ const EditReview = () => {
                     mb={4}
                     required
                   />
+
                   <Card>
                     <CardBody>
-                      <Box>
-                        <Checkbox
-                          defaultChecked={imgSelect}
+                      <Stack>
+                        {/* 사진을 추가하는 모달창 */}
+                        <ReviewAddModal
+                          setFile={setFile}
+                          inputImage={inputImage}
+                          setInputImage={setInputImage}
+                        />
+                        {/* 추가한 사진이 있다면 사진을 보여주기 */}
+                        {inputImage ? (
+                          <Image
+                            src={inputImage}
+                            alt="selected image"
+                            width="150px"
+                            height="150px"
+                            mb={1}
+                          />
+                        ) : null}
+                        {/* <Checkbox
+                          defaultChecked={false}
                           onChange={imgCheckChanged}
                         >
                           사진 추가하기
                         </Checkbox>
-                        {imgSelect ? (
-                          <>
-                            {flag ? (
-                              <>
-                                {isDeleted ? (
-                                  <ReviewImgForm setFile={setFile} />
-                                ) : (
-                                  <>
-                                    <Image
-                                      src={data.photo}
-                                      alt="current image"
-                                      width="150px"
-                                      height="150px"
-                                      mt={2}
-                                      mb={2}
-                                    />
-                                    <IconButton
-                                      align="left"
-                                      mr={1}
-                                      colorScheme="red"
-                                      icon={<SmallCloseIcon />}
-                                      onClick={() => {
-                                        setIsDeleted(true);
-                                      }}
-                                    />
-                                  </>
-                                )}
-                              </>
-                            ) : (
-                              <>
-                                {isDeleted ? null : (
-                                  <ReviewImgForm setFile={setFile} />
-                                )}
-                              </>
-                            )}
-                          </>
-                        ) : null}
-                        {/* {(imgSelect && file && !isDeleted) ? (
-                      <>
-                        <Image src={file} alt="current image" width="150px" height="150px" mt={2} mb={2} />
-                        <IconButton
-                          align="left"
-                          mr={1}
-                          colorScheme="red"
-                          icon={<SmallCloseIcon />}
-                          onClick={() => { setIsDeleted(true); }}
-                        />
-                      </>
-                    ) : null}
-                    {(imgSelect&&file&&isDeleted) || (imgSelect&&!file) || (imgSelect&&file) ? <ReviewImgForm setFile={setFile} /> : null} */}
-                      </Box>
+                        {imgSelect ? <ReviewImgForm setFile={setFile} /> : null} */}
+                      </Stack>
                     </CardBody>
                   </Card>
+
                   <RadioGroup
                     defaultValue="2"
                     m={4}
@@ -237,7 +216,13 @@ const EditReview = () => {
                     <Input
                       type="button"
                       value="Cancle"
-                      onClick={() => navigate(`/review/${data.id}`)}
+                      onClick={() => {
+                        if (!isEdit) {
+                          navigate("/review");
+                        } else {
+                          navigate(`/review/${data.id}`);
+                        }
+                      }}
                     />
                   </Stack>
                 </FormControl>
@@ -250,4 +235,4 @@ const EditReview = () => {
   );
 };
 
-export default EditReview;
+export default AddEditReview;
