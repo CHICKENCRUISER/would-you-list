@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, Input, Select, Textarea } from "@chakra-ui/react";
+import { FormControl, Input, Select, Textarea, Button } from "@chakra-ui/react";
 import { updateTodo } from "../../models/todos";
 import { useState } from "react";
 
@@ -83,9 +83,16 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
               mb={4}
               required
           />
-          <Input type="submit" value="Done!" />
+          <Input type="submit" value="Done!" mb={2} />
+          <Input
+            type="submit"
+            value="Cancle"
+            onClick={(e) => {
+              e.preventDefault();
+              toggleEdit();
+            }}
+          />
         </FormControl>
-        <button onClick={toggleEdit}>Cancle</button>
       </form>
   );
 };
