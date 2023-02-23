@@ -11,12 +11,11 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
-import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
 
 //이미지 업로드 및 크롭 컴포넌트
 const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
   const fileInput = useRef(null);
-  console.log("fileInput", fileInput);
   const cropperRef = useRef(null);
   // User-uploaded image
   // const [inputImage, setInputImage] = useState(null);
@@ -89,7 +88,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             align="left"
             mr={1}
             colorScheme="red"
-            icon={<SmallCloseIcon />}
+            icon={<DeleteIcon />}
             onClick={() => {
               setInputImage(null);
               fileInput.current.value = "";
@@ -100,6 +99,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
           {fileInput.current ? (
             <Button
               colorScheme="teal"
+              mr={1}
               onClick={() => {
                 setIsCropperOpen(true);
               }}
@@ -108,7 +108,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             </Button>
           ) : null}
           {/* 이미지 업로드 완료 버튼 */}
-          <Button onClick={closeModal}>완료</Button>
+          <IconButton icon={<CheckIcon />} colorScheme="green" onClick={closeModal} />
         </>
       ) : null}
       {/* 크롭중이라면 */}
@@ -141,17 +141,19 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             align="left"
             mr={1}
             colorScheme="red"
-            icon={<SmallCloseIcon />}
+            icon={<DeleteIcon />}
             onClick={() => {
               setCroppedImage(null);
               setInputImage(null);
               fileInput.current.value = "";
             }}
           />
-          <Button onClick={recropBtnClicked} value="recrop">
+          <Button onClick={recropBtnClicked} value="recrop" mr={1}>
             다시 자르기
           </Button>
-          <Button
+          <IconButton
+            icon={<CheckIcon />}
+            colorScheme="green"
             onClick={() => {
               closeModal();
               setInputImage(croppedImage);
@@ -159,9 +161,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
 
               setCroppedImage(null);
             }}
-          >
-            완료
-          </Button>
+          />
         </>
       )}
     </Box>

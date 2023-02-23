@@ -29,32 +29,24 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
       <div align="left"> {todo.content}</div>
       <Box align="right">
         {isDone ? (
-          <>
-            {/* <Button
-              leftIcon={<EditIcon />}
-              onClick={() => navigate(`/review/new/${todo.id}`)}
-              colorScheme="blue"
-              size="xs"
-            >
-              리뷰 작성
-            </Button> */}
-            <Button
-              leftIcon={<EditIcon />}
-              onClick={() =>
-                navigate(`/review/new/${todo.id}`, { state: { data } })
-              }
-              colorScheme="blue"
-              size="xs"
-            >
-              리뷰 작성
-            </Button>
-          </>
+          <Button
+            leftIcon={<EditIcon />}
+            onClick={() =>
+              navigate(`/review/new/${todo.id}`, { state: { data } })
+            }
+            colorScheme="blue"
+            size="xs"
+            mr={1}
+          >
+            리뷰 작성
+          </Button>
         ) : null}
         <Button
           leftIcon={<EditIcon />}
           onClick={toggleEdit}
           colorScheme="teal"
           size="xs"
+          mr={1}
         >
           Edit
         </Button>
@@ -66,13 +58,6 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
         >
           Delete
         </Button>
-        <button
-          onClick={() => {
-            console.log(todo);
-          }}
-        >
-          Delete
-        </button>
       </Box>
     </>
   );

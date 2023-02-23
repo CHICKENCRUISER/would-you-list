@@ -20,7 +20,6 @@ const ShowReview = () => {
     const f = async () => {
       const res = await getReviews();
       setReviews(res);
-      console.log(idOrder);
     };
     f();
   }, []);

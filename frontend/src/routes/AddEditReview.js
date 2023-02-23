@@ -25,9 +25,11 @@ import ReviewAddModal from "../components/Review/ReviewAddModal";
 
 //리뷰 추가와 리뷰 수정을 처리하는 컴포넌트
 const AddEditReview = () => {
+
   //기본 이미지
   const defaultImg =
     "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg";
+
   //상위 컴포넌트에서 넘겨받은 데이터
   //리뷰 추가이면 빈 객체(단, todo데이터는 들어있음), 리뷰 수정이면 수정할 리뷰 데이터
   const location = useLocation();
@@ -105,7 +107,6 @@ const AddEditReview = () => {
       navigate("/review");
     } else {
       let state = data.photo !== inputImage;
-      console.log(state);
       newReview.append("isDeleted", state);
       await updateReview(data.todo.id, newReview);
       navigate(`/review/${data.id}`);
@@ -225,7 +226,7 @@ const AddEditReview = () => {
                       value="Cancle"
                       onClick={() => {
                         if (!isEdit) {
-                          navigate("/review");
+                          navigate("/todo");
                         } else {
                           navigate(`/review/${data.id}`);
                         }

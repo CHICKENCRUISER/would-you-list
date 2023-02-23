@@ -20,13 +20,13 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import {
-  PhoneIcon,
   AddIcon,
   WarningIcon,
   ChevronDownIcon,
   HamburgerIcon,
   EditIcon,
   SmallCloseIcon,
+  DeleteIcon
 } from "@chakra-ui/icons";
 
 //리뷰 카드 컴포넌트
@@ -78,7 +78,7 @@ const ReviewCard = ({ data }) => {
                 >
                   리뷰 수정
                 </MenuItem>
-                <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>
+                <MenuItem icon={<DeleteIcon />} onClick={deleteBtnClicked}>
                   리뷰 삭제
                 </MenuItem>
                 {/* <MenuItem

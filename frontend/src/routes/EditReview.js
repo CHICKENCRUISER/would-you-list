@@ -32,7 +32,6 @@ const EditReview = () => {
   const {
     state: { data },
   } = location;
-  console.log(data);
   //기존 사진이 있으면 true, 없으면 false
   const flag = data.photo !== defaultImg;
 
