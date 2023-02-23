@@ -6,8 +6,8 @@ import { getReviews } from "../../models/reviews";
 
 //모든 리뷰를 보여주는 컴포넌트
 const ShowReview = () => {
-
   const [reviews, setReviews] = useState([]);
+  let idOrder = 0;
 
   let { id } = useParams();
   const [height, setHeight] = useState(0);
@@ -20,12 +20,13 @@ const ShowReview = () => {
     const f = async () => {
       const res = await getReviews();
       setReviews(res);
-    }
+    };
     f();
   }, []);
   useEffect(() => {
     if (reviewCardRef.current) {
-      setHeight(70 + reviewCardRef.current.offsetHeight * (parseInt(id) - 1));
+      idOrder = reviews.findIndex((review) => review.id === parseInt(id));
+      setHeight(70 + reviewCardRef.current.offsetHeight * idOrder);
     }
   });
 

@@ -8,7 +8,7 @@ import ShowReview from "./Review/ShowReview";
 import ReviewMain from "../routes/ReviewMain";
 import TodoMain from "../routes/TodoMain";
 import EditReview from "../routes/EditReview";
-
+import AddEditReview from "../routes/AddEditReview";
 
 const AppRouter = () => {
   return (
@@ -19,8 +19,10 @@ const AppRouter = () => {
           <Route path="/" element={<Home />} />
           <Route path="/todo" element={<TodoMain />} />
           <Route path="/review" element={<ReviewMain />} />
-          <Route path="/review/new/:id" element={<AddReview />} />
-          <Route path="/review/edit/:id" element={<EditReview />} />
+          <Route path="/review/new/:id" element={<AddEditReview />} />
+          {/* <Route path="/review/new/:id" element={<AddReview />} /> */}
+          {/* <Route path="/review/edit/:id" element={<EditReview />} /> */}
+          <Route path="/review/edit/:id" element={<AddEditReview />} />
           <Route path="/review/:id" element={<ShowReview />} />
           <Route path="*" element={<div>여기 아니에요</div>} />
         </Routes>

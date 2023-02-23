@@ -16,11 +16,13 @@ import {
   StackDivider,
   Checkbox,
   Textarea,
-  Badge
+  Badge,
+  Image,
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReviewImgForm from "../components/Review/ReviewImgForm";
+import ReviewAddModal from "../components/Review/ReviewAddModal";
 
 const AddReview = () => {
   let { id } = useParams();
@@ -30,6 +32,7 @@ const AddReview = () => {
   const [expression, setExpression] = useState("happy");
   const [file, setFile] = useState(null);
   const [imgSelect, setImgSelect] = useState(false);
+  const [inputImage, setInputImage] = useState(null);
 
   const tagColors = {
     FOOD: "gray",
@@ -56,18 +59,30 @@ const AddReview = () => {
 
   let navigate = useNavigate();
 
-  const imgCheckChanged = () => { setImgSelect(prev => !prev); }
+  const imgCheckChanged = () => {
+    setImgSelect((prev) => !prev);
+  };
   const reviewFormSubmitted = async (e) => {
+    const now = new Date();
+    const options = {
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    const formattedDate = now.toLocaleString("ko-KR", options);
+
     e.preventDefault();
     const newReview = new FormData();
     newReview.append("title", title);
     newReview.append("review", review);
     newReview.append("place", place);
-    newReview.append("doneDate", Date.now());
+    newReview.append("doneDate", formattedDate);
     newReview.append("expression", expression);
     newReview.append("todoId", todo.id);
     newReview.append("file", file);
-    
+    console.log(Date.now());
     await createReview(newReview);
     navigate("/review");
   };
@@ -95,10 +110,7 @@ const AddReview = () => {
               <Heading size="xs" textTransform="uppercase">
                 CATEGORY
               </Heading>
-              <Badge
-                colorScheme={tagColors[todo.category]}
-                textAlign="middle"
-              >
+              <Badge colorScheme={tagColors[todo.category]} textAlign="middle">
                 {todo.category}
               </Badge>
             </Box>
@@ -133,11 +145,34 @@ const AddReview = () => {
                     required
                   />
 
-                  <Card><CardBody><Stack>
-                    <Checkbox defaultChecked={false} onChange={imgCheckChanged}>사진 추가하기</Checkbox>
-                    {imgSelect ? <ReviewImgForm setFile={setFile} /> : null}
-                  </Stack></CardBody></Card>
-                  
+                  <Card>
+                    <CardBody>
+                      <Stack>
+                        <ReviewAddModal
+                          setFile={setFile}
+                          inputImage={inputImage}
+                          setInputImage={setInputImage}
+                        />
+                        {inputImage ? (
+                          <Image
+                            src={inputImage}
+                            alt="selected image"
+                            width="150px"
+                            height="150px"
+                            mb={1}
+                          />
+                        ) : null}
+                        {/* <Checkbox
+                          defaultChecked={false}
+                          onChange={imgCheckChanged}
+                        >
+                          사진 추가하기
+                        </Checkbox>
+                        {imgSelect ? <ReviewImgForm setFile={setFile} /> : null} */}
+                      </Stack>
+                    </CardBody>
+                  </Card>
+
                   <RadioGroup
                     defaultValue="2"
                     m={4}
@@ -155,7 +190,11 @@ const AddReview = () => {
                   </RadioGroup>
                   <Stack spacing={2}>
                     <Input type="submit" value="Done!" />
-                    <Input type="button" value="Cancle" onClick={() => navigate("/todo")} />
+                    <Input
+                      type="button"
+                      value="Cancle"
+                      onClick={() => navigate("/todo")}
+                    />
                   </Stack>
                 </FormControl>
               </form>

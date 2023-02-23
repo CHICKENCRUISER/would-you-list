@@ -8,18 +8,17 @@ import {
   IconButton,
   Image,
   Input,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
-import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
 
-
-const ReviewImgForm = ({ setFile }) => {
-
-  const fileInput = useRef();
+//이미지 업로드 및 크롭 컴포넌트
+const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
+  const fileInput = useRef(null);
   const cropperRef = useRef(null);
   // User-uploaded image
-  const [inputImage, setInputImage] = useState(null);
+  // const [inputImage, setInputImage] = useState(null);
   // Cropped image with user-selected area
   const [croppedImage, setCroppedImage] = useState(null);
   // Flag to keep track of whether the cropper is open or closed
@@ -27,35 +26,39 @@ const ReviewImgForm = ({ setFile }) => {
 
   // dataURL을 file 객체로 변환하는 함수. 서버로 전송 시 file 객체 형태여야 함
   const dataURLtoFile = (dataurl, fileName) => {
-    var arr = dataurl.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), 
-        n = bstr.length, 
-        u8arr = new Uint8Array(n);   
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], fileName, {type:mime});
-  }
+    return new File([u8arr], fileName, { type: mime });
+  };
 
+  // 크롭 버튼 클릭 시 실행되는 크롭 함수
   const onCrop = () => {
     const imageElement = cropperRef?.current;
     const cropper = imageElement?.cropper;
-    const resultURL = cropper.getCroppedCanvas().toDataURL()
+    const resultURL = cropper.getCroppedCanvas().toDataURL();
     const resultFile = dataURLtoFile(resultURL, uuidv4());
     setCroppedImage(resultURL);
     setFile(resultFile);
   };
+
+  //크롭 함수 실행 중인지 확인하는 함수들
   const cropBtnClicked = () => {
     // save the croppedImage data URL however you need
     setIsCropperOpen(false);
   };
   const recropBtnClicked = () => {
     setIsCropperOpen(true);
-  }
+  };
 
   return (
     <Box spacing={4} mt={2}>
+      {/* 이미지를 파일에서 선택하는 버튼 */}
       <Input
         ref={fileInput}
         mb={4}
@@ -64,29 +67,51 @@ const ReviewImgForm = ({ setFile }) => {
         onChange={(e) => {
           if (e.target.files) {
             setInputImage(URL.createObjectURL(e.target.files[0]));
+            // setInputImage2(URL.createObjectURL(e.target.files[0]));
             setFile(e.target.files[0]);
           }
           // setIsCropperOpen(true);
         }}
       />
-
-      {(inputImage && !isCropperOpen && !croppedImage) ? (
+      {/* 인풋이미지가 있고, 크롭이 열려있지 않고, 크롭된 이미지가 없다면 */}
+      {inputImage && !isCropperOpen && !croppedImage ? (
         <>
-          <Image src={inputImage} alt="selected image" width="150px" height="150px" mb={1} />
+          <Image
+            src={inputImage}
+            alt="selected image"
+            width="150px"
+            height="150px"
+            mb={1}
+          />
+          {/* 이미지 삭제 버튼 */}
           <IconButton
             align="left"
             mr={1}
             colorScheme="red"
-            icon={<SmallCloseIcon />}
+            icon={<DeleteIcon />}
             onClick={() => {
               setInputImage(null);
               fileInput.current.value = "";
             }}
           />
-          <Button colorScheme="teal" onClick={() => { setIsCropperOpen(true); }}>Crop</Button>
+          {/* 이미지 크롭 버튼 */}
+          {/* 만약 리뷰 수정인데 이미지가 있다면 크롭 버튼이 보이지 않음 */}
+          {fileInput.current ? (
+            <Button
+              colorScheme="teal"
+              mr={1}
+              onClick={() => {
+                setIsCropperOpen(true);
+              }}
+            >
+              사진 자르기
+            </Button>
+          ) : null}
+          {/* 이미지 업로드 완료 버튼 */}
+          <IconButton icon={<CheckIcon />} colorScheme="green" onClick={closeModal} />
         </>
       ) : null}
-
+      {/* 크롭중이라면 */}
       {isCropperOpen && (
         <>
           <Cropper
@@ -95,13 +120,15 @@ const ReviewImgForm = ({ setFile }) => {
             crop={onCrop}
             ref={cropperRef}
           />
-          <Center mt={1}><Button onClick={cropBtnClicked}>Crop</Button></Center>
+          <Center mt={1}>
+            <Button onClick={cropBtnClicked}>Crop</Button>
+          </Center>
         </>
       )}
-      {(!isCropperOpen && croppedImage) && (
+      {!isCropperOpen && croppedImage && (
         <>
           <Image src={croppedImage} width="150px" height="150px" mb={1} />
-          <IconButton
+          {/* <IconButton
             icon={<CheckIcon />}
             colorScheme="green"
             onClick={() => {
@@ -109,8 +136,32 @@ const ReviewImgForm = ({ setFile }) => {
               setCroppedImage(null);
             }}
             mr={1}
+          /> */}
+          <IconButton
+            align="left"
+            mr={1}
+            colorScheme="red"
+            icon={<DeleteIcon />}
+            onClick={() => {
+              setCroppedImage(null);
+              setInputImage(null);
+              fileInput.current.value = "";
+            }}
           />
-          <Button onClick={recropBtnClicked} value="recrop">Recrop</Button>
+          <Button onClick={recropBtnClicked} value="recrop" mr={1}>
+            다시 자르기
+          </Button>
+          <IconButton
+            icon={<CheckIcon />}
+            colorScheme="green"
+            onClick={() => {
+              closeModal();
+              setInputImage(croppedImage);
+              // setInputImage2(croppedImage);
+
+              setCroppedImage(null);
+            }}
+          />
         </>
       )}
     </Box>

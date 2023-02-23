@@ -20,25 +20,26 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import {
-  PhoneIcon,
   AddIcon,
   WarningIcon,
   ChevronDownIcon,
   HamburgerIcon,
   EditIcon,
-  SmallCloseIcon
+  SmallCloseIcon,
+  DeleteIcon
 } from "@chakra-ui/icons";
 
 //리뷰 카드 컴포넌트
 const ReviewCard = ({ data }) => {
-
   const navigate = useNavigate();
   const deleteBtnClicked = async () => {
     try {
       await deleteReview(data.id);
       navigate("/review");
-    } catch (e) { console.error(e); }
-  }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div
@@ -63,17 +64,31 @@ const ReviewCard = ({ data }) => {
             <Menu>
               <MenuButton
                 as={IconButton}
-                aria-label='Options'
+                aria-label="Options"
                 icon={<HamburgerIcon />}
-                variant='ghost'
+                variant="ghost"
                 colorScheme="gray"
               />
               <MenuList>
                 <MenuItem
                   icon={<EditIcon />}
-                  onClick={() => { navigate(`/review/edit/${data.id}`, { state: { data } }) }}
-                >리뷰 수정</MenuItem>
-                <MenuItem icon={<SmallCloseIcon />} onClick={deleteBtnClicked}>리뷰 삭제</MenuItem>
+                  onClick={() => {
+                    navigate(`/review/edit/${data.id}`, { state: { data } });
+                  }}
+                >
+                  리뷰 수정
+                </MenuItem>
+                <MenuItem icon={<DeleteIcon />} onClick={deleteBtnClicked}>
+                  리뷰 삭제
+                </MenuItem>
+                {/* <MenuItem
+                  icon={<EditIcon />}
+                  onClick={() => {
+                    navigate(`/review/edit2/${data.id}`, { state: { data } });
+                  }}
+                >
+                  리뷰 수정2
+                </MenuItem> */}
               </MenuList>
             </Menu>
           </Flex>
@@ -81,7 +96,13 @@ const ReviewCard = ({ data }) => {
         <CardBody>
           <Text>{data.review}</Text>
         </CardBody>
-        <Image objectFit="cover" src={data.photo} alt="Chakra UI" width="600px" height="600px" />
+        <Image
+          objectFit="cover"
+          src={data.photo}
+          alt="Chakra UI"
+          width="600px"
+          height="600px"
+        />
 
         {/* 아래 코드는 카드 하단 인데 사실 쓸모는 없지만 혹시 몰라서 남겨둠 */}
         <CardFooter
