@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import Cropper from "react-cropper";
+import React, { useState, useRef } from "react";
 import "cropperjs/dist/cropper.css";
 import {
   Box,
@@ -8,17 +7,18 @@ import {
   IconButton,
   Image,
   Input,
-  Stack,
 } from "@chakra-ui/react";
-import { v4 as uuidv4 } from "uuid";
 import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
+import Cropper from "react-cropper";
+import { v4 as uuidv4 } from "uuid";
 
-//이미지 업로드 및 크롭 컴포넌트
+
+// 이미지 업로드 및 크롭 컴포넌트
 const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
+
   const fileInput = useRef(null);
   const cropperRef = useRef(null);
   // User-uploaded image
-  // const [inputImage, setInputImage] = useState(null);
   // Cropped image with user-selected area
   const [croppedImage, setCroppedImage] = useState(null);
   // Flag to keep track of whether the cropper is open or closed
@@ -58,6 +58,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
 
   return (
     <Box spacing={4} mt={2}>
+
       {/* 이미지를 파일에서 선택하는 버튼 */}
       <Input
         ref={fileInput}
@@ -73,6 +74,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
           // setIsCropperOpen(true);
         }}
       />
+
       {/* 인풋이미지가 있고, 크롭이 열려있지 않고, 크롭된 이미지가 없다면 */}
       {inputImage && !isCropperOpen && !croppedImage ? (
         <>
@@ -83,17 +85,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             height="150px"
             mb={1}
           />
-          {/* 이미지 삭제 버튼 */}
-          <IconButton
-            align="left"
-            mr={1}
-            colorScheme="red"
-            icon={<DeleteIcon />}
-            onClick={() => {
-              setInputImage(null);
-              fileInput.current.value = "";
-            }}
-          />
+
           {/* 이미지 크롭 버튼 */}
           {/* 만약 리뷰 수정인데 이미지가 있다면 크롭 버튼이 보이지 않음 */}
           {fileInput.current ? (
@@ -107,10 +99,24 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
               사진 자르기
             </Button>
           ) : null}
+
           {/* 이미지 업로드 완료 버튼 */}
           <IconButton icon={<CheckIcon />} colorScheme="green" onClick={closeModal} />
+
+          {/* 이미지 삭제 버튼 */}
+          <IconButton
+            align="left"
+            mr={1}
+            colorScheme="red"
+            icon={<DeleteIcon />}
+            onClick={() => {
+              setInputImage(null);
+              fileInput.current.value = "";
+            }}
+          />
         </>
       ) : null}
+
       {/* 크롭중이라면 */}
       {isCropperOpen && (
         <>
@@ -120,23 +126,32 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
             crop={onCrop}
             ref={cropperRef}
           />
+
           <Center mt={1}>
             <Button onClick={cropBtnClicked}>Crop</Button>
           </Center>
+
         </>
       )}
+
       {!isCropperOpen && croppedImage && (
         <>
           <Image src={croppedImage} width="150px" height="150px" mb={1} />
-          {/* <IconButton
+
+          <Button onClick={recropBtnClicked} value="recrop" mr={1}>
+            다시 자르기
+          </Button>
+
+          <IconButton
             icon={<CheckIcon />}
             colorScheme="green"
             onClick={() => {
+              closeModal();
               setInputImage(croppedImage);
               setCroppedImage(null);
             }}
-            mr={1}
-          /> */}
+          />
+
           <IconButton
             align="left"
             mr={1}
@@ -148,20 +163,7 @@ const ReviewImgForm = ({ setFile, closeModal, inputImage, setInputImage }) => {
               fileInput.current.value = "";
             }}
           />
-          <Button onClick={recropBtnClicked} value="recrop" mr={1}>
-            다시 자르기
-          </Button>
-          <IconButton
-            icon={<CheckIcon />}
-            colorScheme="green"
-            onClick={() => {
-              closeModal();
-              setInputImage(croppedImage);
-              // setInputImage2(croppedImage);
 
-              setCroppedImage(null);
-            }}
-          />
         </>
       )}
     </Box>

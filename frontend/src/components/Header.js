@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@chakra-ui/react";
 
 
+// 웹의 모든 페이지에 고정되어 있는 헤더 메뉴 바
 const Header = () => {
 
   const navigate = useNavigate();

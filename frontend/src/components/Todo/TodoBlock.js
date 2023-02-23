@@ -8,18 +8,20 @@ import {
   Checkbox,
   Badge,
 } from "@chakra-ui/react";
+
 import EditForm from "./TodoEditForm";
-import ShowTodoContent from "./TodoBlockOptions";
-import { toggleTodoState } from "../../models/todos";
 import TodoBlockOptions from "./TodoBlockOptions";
 
-//Todo 한블럭 생성 컴포넌트
-//Home => MainTabs => Todo => TodoBlock
+import { toggleTodoState } from "../../models/todos";
+
+
+// 개별 Todo에 대한 컴포넌트
 const TodoBlock = ({ todo, refreshTodos, isDone }) => {
-  //Todo 블럭의 edit 상태를 관리하는 state
+
+  // Todo 블럭의 edit 상태를 관리하는 state
   const [edit, setEdit] = useState(false);
 
-  //tag 색상 관리 변수
+  // tag 색상 관리 변수
   const tagColors = {
     FOOD: "gray",
     MOVIE: "red",
@@ -31,18 +33,20 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
     SPORTS: "cyan",
   };
 
-  //edit 상태를 변경하는 함수
+  // edit 상태를 변경하는 함수
   const toggleEdit = () => {
     setEdit((prev) => !prev);
   };
+  // Todo의 완료 여부를 toggle하는 함수
   const toggleState = async () => {
     await toggleTodoState(todo.id);
     refreshTodos();
-    // window.location.replace("/");
   };
+
 
   return (
     <AccordionItem margin={2}>
+
       <h2>
         <AccordionButton>
           <Checkbox
@@ -57,12 +61,11 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
             minWidth="60px"
             colorScheme={tagColors[todo.category]}
             textAlign="middle"
-          >
-            {todo.category}
-          </Badge>
+          >{todo.category}</Badge>
           <AccordionIcon />
         </AccordionButton>
       </h2>
+
       <AccordionPanel pb={4}>
         {edit ? (
           <EditForm
@@ -79,6 +82,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
           />
         )}
       </AccordionPanel>
+
     </AccordionItem>
   );
 };

@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTodosByState } from "../../models/todos.js";
 import { Stack, Accordion, Center, Card } from "@chakra-ui/react";
-import { setTodosNotDone, setTodosDone } from "../../store.js";
 
 import TodoBlock from "./TodoBlock";
 import TodoAddModal from "./TodoAddModal";
 
+import { getTodosByState } from "../../models/todos.js";
+import { setTodosNotDone, setTodosDone } from "../../store.js";
+
+
+// isDone에 따라 미완료된 todo 목록 또는 완료된 todo 목록을 시각화
 const Todo = ({ isDone }) => {
+
   const dispatch = useDispatch();
   let todosNotDone = useSelector((state) => state.todosNotDone);
   let todosDone = useSelector((state) => state.todosDone);
@@ -31,6 +35,7 @@ const Todo = ({ isDone }) => {
   return (
     <>
       <Stack spacing={5}>
+
         <Card minHeight="500px" pxvariant="filled" bgColor="whitesmoke">
           {todos.length ? (
             <Accordion allowToggle>
@@ -49,7 +54,9 @@ const Todo = ({ isDone }) => {
             </Center>
           )}
         </Card>
+
         {isDone ? null : <TodoAddModal refreshTodos={refreshTodos} />}
+        
       </Stack>
     </>
   );

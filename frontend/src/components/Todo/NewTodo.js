@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { createTodo } from "../../models/todos";
 import { FormControl, Input, Select, Textarea } from "@chakra-ui/react";
 
+import { createTodo } from "../../models/todos";
+
+
+// todo 생성 모달의 내용 컴포넌트
 const NewTodo = ({ closeModal, refreshTodos }) => {
+
   const now = new Date();
 
   // Format the date and time as a string in the required format
@@ -23,8 +27,6 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
       target: { value },
     } = e;
     console.log("this is value" + value);
-    // const arr = value.match(/\d+/g);
-    // const result = `${Number(arr[1])}월 ${Number(arr[2])}일 ${arr[3]>=12 ? "오후" : "오전"} ${arr[3]}:${arr[4]}`;
     setDate(value);
   };
   const todoFormSubmitted = async (e) => {

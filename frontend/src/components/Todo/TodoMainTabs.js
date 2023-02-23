@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Tabs,
   TabList,
@@ -6,10 +7,12 @@ import {
   TabPanel,
   Stack,
 } from "@chakra-ui/react";
+
 import Todo from "./Todo";
 import ReviewedTodo from "./ReviewedTodo";
 
 
+// Todo 기본 화면 -> 미완료 목록 / 완료 목록 display
 const TodoMainTabs = () => {
   return (
     <Tabs defaultIndex={0} align="center" variant='soft-rounded' colorScheme='yellow'>

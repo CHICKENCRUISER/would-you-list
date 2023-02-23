@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  AccordionIcon
 } from "@chakra-ui/react";
+
 import { getTodosByState } from "../../models/todos";
 
 
+// 리뷰 작성이 완료된 todo에 대한 목록 컴포넌트
 const ReviewedTodo = () => {
+
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const ReviewedTodo = () => {
     f();
   }, []);
 
+  
   return (
     <Accordion allowToggle>
       <AccordionItem>

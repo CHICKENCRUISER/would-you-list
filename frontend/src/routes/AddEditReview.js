@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { createTodo } from "../models/todos";
-import { updateReview } from "../models/reviews";
-import { createReview } from "../models/reviews";
-
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FormControl,
   Input,
@@ -20,33 +17,35 @@ import {
   Badge,
   Image,
 } from "@chakra-ui/react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+
 import ReviewAddModal from "../components/Review/ReviewAddModal";
 
-//리뷰 추가와 리뷰 수정을 처리하는 컴포넌트
+import { createReview, updateReview } from "../models/reviews";
+
+
+// 리뷰 추가와 리뷰 수정을 처리하는 컴포넌트
 const AddEditReview = () => {
 
-  //기본 이미지
+  // 기본 이미지 url
   const defaultImg =
     "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg";
 
-  //상위 컴포넌트에서 넘겨받은 데이터
-  //리뷰 추가이면 빈 객체(단, todo데이터는 들어있음), 리뷰 수정이면 수정할 리뷰 데이터
+  // 상위 컴포넌트에서 useNavigate로 넘겨받은 데이터
+  // -> 리뷰 추가이면 빈 객체(단, todo데이터는 들어있음), 리뷰 수정이면 수정할 리뷰 데이터
   const location = useLocation();
-  const {
-    state: { data },
-  } = location;
-  //리뷰 추가이면 false, 리뷰 수정이면 true
+  const { state: { data } } = location;
+
+  // 리뷰 생성인지 수정인지 구분하는 변수
+  // -> 리뷰 추가이면 false, 리뷰 수정이면 true
   let isEdit = data.title ? true : false;
 
-  // let { id } = useParams();
+  // const [imgSelect, setImgSelect] = useState(false);
   const [title, setTitle] = useState(data.title);
   const [review, setReview] = useState(data.review);
   const [place, setPlace] = useState(data.place);
   const [expression, setExpression] = useState(data.expression);
   const [file, setFile] = useState(null);
-  // const [imgSelect, setImgSelect] = useState(false);
-  //데이터 속 이미지가 defaultImg와 같으면 inputImage를 null, 아니면 이미지 경로를 넣어줌
+  // 데이터 속 이미지가 defaultImg와 같으면 inputImage를 null, 아니면 이미지 경로를 넣어줌
   const [inputImage, setInputImage] = useState(
     data.photo === defaultImg ? null : data.photo
   );
@@ -62,26 +61,11 @@ const AddEditReview = () => {
     SPORTS: "cyan",
   };
 
-  //   let todosDone = useSelector((state) => state.todosDone);
-  //   const todo = todosDone.find((todo) => todo.id === Number(id));
-
-  // const imgInputChanged = (e) => {
-  //   e.preventDefault();
-  //   if (e.target.files) {
-  //     const uploadFile = e.target.files[0];
-  //     console.log(uploadFile);
-  //     setFile(uploadFile);
-  //   }
-  // }
-
   let navigate = useNavigate();
 
-  //   const imgCheckChanged = () => {
-  //     setImgSelect((prev) => !prev);
-  //   };
-  //done버튼을 누르면 데이터베이스로 데이터를 보냄
+  // done버튼을 누르면 데이터베이스로 데이터를 보냄
   const reviewFormSubmitted = async (e) => {
-    //날짜 포맷을 바꿔줌
+    // 날짜 포맷을 바꿔줌
     const now = new Date();
     const options = {
       month: "long",
@@ -101,7 +85,8 @@ const AddEditReview = () => {
     newReview.append("expression", expression);
     newReview.append("todoId", data.todo.id);
     newReview.append("file", file);
-    //리뷰 추가이면 createReview, 리뷰 수정이면 updateReview
+
+    // 리뷰 추가이면 createReview, 리뷰 수정이면 updateReview
     if (!isEdit) {
       await createReview(newReview);
       navigate("/review");
@@ -116,14 +101,19 @@ const AddEditReview = () => {
   return (
     <Box m={4}>
       <Card>
+
+        {/* Header */}
         <CardHeader>
           <Heading size="md" textAlign={"center"}>
             "{data.todo.name}"에 대한 멋진 리뷰를 남겨 주세요!
           </Heading>
         </CardHeader>
 
+        {/* Body */}
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
+
+            {/* Todo 정보 */}
             <Box>
               <Heading size="xs" textTransform="uppercase">
                 TODO
@@ -143,12 +133,16 @@ const AddEditReview = () => {
                 {data.todo.category}
               </Badge>
             </Box>
+
+            {/* Review 양식 */}
             <Box>
               <Heading size="xs" textTransform="uppercase">
                 REVIEW
               </Heading>
               <form onSubmit={reviewFormSubmitted}>
                 <FormControl mt={4}>
+
+                  {/* 제목/장소/내용 */}
                   <Input
                     type="text"
                     placeholder="Title"
@@ -174,6 +168,7 @@ const AddEditReview = () => {
                     required
                   />
 
+                  {/* 이미지 */}
                   <Card>
                     <CardBody>
                       <Stack>
@@ -193,17 +188,11 @@ const AddEditReview = () => {
                             mb={1}
                           />
                         ) : null}
-                        {/* <Checkbox
-                          defaultChecked={false}
-                          onChange={imgCheckChanged}
-                        >
-                          사진 추가하기
-                        </Checkbox>
-                        {imgSelect ? <ReviewImgForm setFile={setFile} /> : null} */}
                       </Stack>
                     </CardBody>
                   </Card>
 
+                  {/* 평가 */}
                   <RadioGroup
                     defaultValue="2"
                     m={4}
@@ -219,6 +208,8 @@ const AddEditReview = () => {
                       </Radio>
                     </Stack>
                   </RadioGroup>
+
+                  {/* 버튼 */}
                   <Stack spacing={2}>
                     <Input type="submit" value="Done!" />
                     <Input
@@ -233,11 +224,14 @@ const AddEditReview = () => {
                       }}
                     />
                   </Stack>
+
                 </FormControl>
               </form>
             </Box>
+
           </Stack>
         </CardBody>
+
       </Card>
     </Box>
   );

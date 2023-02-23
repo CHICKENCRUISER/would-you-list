@@ -1,13 +1,12 @@
-import React from "react";
-import { FormControl, Input, Select, Textarea, Button } from "@chakra-ui/react";
-import { updateTodo } from "../../models/todos";
-import { useState } from "react";
+import React, { useState } from "react";
+import { FormControl, Input, Select, Textarea } from "@chakra-ui/react";
 
-//EditForm 컴포넌트
-//Home => MainTabs => Todo => TodoBlock => EditForm
+import { updateTodo } from "../../models/todos";
+
+
+// Todo 수정 컴포넌트
 const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
-  //EditForm에서 입력받은 값을 state에 저장
-  //타이핑을 할 때마다 state가 업데이트되고, state가 업데이트되면 화면이 다시 렌더링된다.
+
   const [name, setName] = useState(todo.name);
   const [category, setCategory] = useState(todo.category);
   const [content, setContent] = useState(todo.content);
@@ -15,12 +14,10 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
 
   const dateInputChanged = (e) => {
     const { target: { value }} = e;
-    // const arr = value.match(/\d+/g);
-    // const result = `${Number(arr[1])}월 ${Number(arr[2])}일 ${arr[3]>=12 ? "오후" : "오전"} ${arr[3]}:${arr[4]}`;
     setDate(value);
   }
 
-  //EditForm에서 입력받은 값을 서버에 업데이트하는 함수
+  // EditForm에서 입력받은 값을 서버에 업데이트하는 함수
   const editFormSubmitted = async (e) => {
     e.preventDefault();
     const edittedTodo = {
@@ -33,9 +30,7 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
     try {
       await updateTodo(todo.id, edittedTodo);
       refreshTodos();
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) { console.error(e); }
     toggleEdit();
   };
 
