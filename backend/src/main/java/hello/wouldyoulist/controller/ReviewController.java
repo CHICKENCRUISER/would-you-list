@@ -147,7 +147,7 @@ public class ReviewController {
             // Case B: file false && del false
             // 기존 이미지 유지
         }
-        else{
+        else {
 //            if(isDeleted)
             // Case C: file true && del true
             if (photoId != 1) {
