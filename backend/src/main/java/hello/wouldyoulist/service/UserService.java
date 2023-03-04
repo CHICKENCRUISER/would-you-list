@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserService {
-    public User join(User user){
-        validateDupicateUser(user);
-
-        return user;
-    }
-
-    public void validateDuplicateUser(User user){
-
-    }
+//    public User join(User user){
+//        validateDupicateUser(user);
+//
+//        return user;
+//    }
+//
+//    public void validateDuplicateUser(User user){
+//
+//    }
 }
