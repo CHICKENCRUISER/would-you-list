@@ -1,5 +1,6 @@
 package hello.wouldyoulist.domain.dto;
 
+import hello.wouldyoulist.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,10 +9,10 @@ public class TodoDto {
     @Data
     public static class CreateTodoRequest {
         private String user;
-        private String name;
-        private String date;
+        private String todoName;
+        private String planDate;
         private String category;
-        private String content;
+        private String todoContent;
         private Boolean state;
     }
 
@@ -27,10 +28,10 @@ public class TodoDto {
     @Data
     public static class UpdateTodoRequest {
         private String user;
-        private String name;
-        private String date;
+        private String todoName;
+        private String planDate;
         private String category;
-        private String content;
+        private String todoContent;
     }
 
     @Data

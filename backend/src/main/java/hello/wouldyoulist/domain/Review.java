@@ -21,10 +21,10 @@ public class Review {
     @OneToOne(mappedBy = "review")
     private Todo todo;
 
-    private Long photoId;
+    private Long reviewPhotoId;
     private String doneDate;
-    private String title;
-    private String review;
+    private String reviewTitle;
+    private String reviewContent;
     private String place;
     private String expression;
 

@@ -3,6 +3,7 @@ package hello.wouldyoulist;
 import hello.wouldyoulist.domain.Review;
 import hello.wouldyoulist.domain.Todo;
 import hello.wouldyoulist.domain.UploadFile;
+import hello.wouldyoulist.domain.User;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class InitDb {
         private final EntityManager em;
 
         public void DbInit() {
+
             Todo todo1 = createTodo("이동섭", "종만북", "2월 5일 오후 7:30", "BOOK", "어쩌구저쩌구", true, null);
             Todo todo2 = createTodo("이동섭", "풋살", "2월 5일 오후 11:00", "SPORTS", "풋살체련 희망자!", true, null);
             Todo todo3 = createTodo("이동섭", "아바타", "2월 9일 오후 3:30", "MOVIE", "아바타2 보기전", false, null);
@@ -52,23 +54,23 @@ public class InitDb {
             em.persist(defaultPhoto);
         }
 
-        private static Todo createTodo(String user, String name, String date, String category, String content, Boolean state, Review review) {
+        private static Todo createTodo(String user, String todoName, String planDate, String category, String todoContent, Boolean state, Review review) {
             Todo todo = new Todo();
             todo.setUser(user);
-            todo.setName(name);
-            todo.setDate(date);
+            todo.setTodoName(todoName);
+            todo.setPlanDate(planDate);
             todo.setCategory(category);
-            todo.setContent(content);
+            todo.setTodoContent(todoContent);
             todo.setState(state);
             todo.setReview(review);
             return todo;
         }
 
-        private static Review createReview(Long photoId, String title, String review, String doneDate, String place, String expression) {
+        private static Review createReview(Long reviewPhotoId, String reviewTitle, String reviewContent, String doneDate, String place, String expression) {
             Review newReview = new Review();
-            newReview.setPhotoId(photoId);
-            newReview.setTitle(title);
-            newReview.setReview(review);
+            newReview.setReviewPhotoId(reviewPhotoId);
+            newReview.setReviewTitle(reviewTitle);
+            newReview.setReviewContent(reviewContent);
             newReview.setDoneDate(doneDate);
             newReview.setPlace(place);
             newReview.setExpression(expression);
