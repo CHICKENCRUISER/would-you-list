@@ -29,8 +29,8 @@ CREATE TABLE review (
                         review_photo_id BIGINT
 );
 
-DROP TABLE IF EXISTS user_account;
-CREATE TABLE user_account (
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         email VARCHAR (255) ,
                         password VARCHAR (255),
