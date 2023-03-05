@@ -42,9 +42,9 @@ public class ReviewController {
         List<Review> dataReviews = reviewService.getReviews();
         List<ReadReviewResponse> reviews = new ArrayList<>();
         for (Review dataReview : dataReviews) {
-            String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
+            String photoUrl = fileService.findOne(dataReview.getReviewPhotoId()).get().getFullPath();
             ReadReviewResponse review = new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl,
-                    dataReview.getDoneDate(), dataReview.getTitle(), dataReview.getReview(),
+                    dataReview.getDoneDate(), dataReview.getReviewTitle(), dataReview.getReviewContent(),
                     dataReview.getPlace(), dataReview.getExpression());
 
             reviews.add(review);
@@ -58,8 +58,8 @@ public class ReviewController {
         List<ThumbnailReviewResponse> reviewThumbnails = new ArrayList<>();
         for (Review dataReview : dataReviews) {
             ThumbnailReviewResponse reviewThumbnail = new ThumbnailReviewResponse();
-            reviewThumbnail.setPhoto(fileService.findOne(dataReview.getPhotoId()).get().getFullPath());
-            reviewThumbnail.setTitle(dataReview.getTitle());
+            reviewThumbnail.setReviewPhoto(fileService.findOne(dataReview.getReviewPhotoId()).get().getFullPath());
+            reviewThumbnail.setReviewTitle(dataReview.getReviewTitle());
 
             reviewThumbnails.add(reviewThumbnail);
         }
@@ -69,9 +69,9 @@ public class ReviewController {
     @GetMapping("/review/{reviewId}")
     public ReadReviewResponse reviewOne(@PathVariable Long reviewId) {
         Review dataReview = reviewService.findOne(reviewId).get();
-        String photoUrl = fileService.findOne(dataReview.getPhotoId()).get().getFullPath();
+        String photoUrl = fileService.findOne(dataReview.getReviewPhotoId()).get().getFullPath();
         return new ReadReviewResponse(dataReview.getId(), dataReview.getTodo(), photoUrl, dataReview.getDoneDate(),
-                dataReview.getTitle(), dataReview.getReview(), dataReview.getPlace(), dataReview.getExpression());
+                dataReview.getReviewTitle(), dataReview.getReviewContent(), dataReview.getPlace(), dataReview.getExpression());
     }
 
     //참고 링크: https://velog.io/@dhk22/ToyProject-1-SpringBoot를-이용한-파일-업로드에-JPA적용-시키기
@@ -80,19 +80,19 @@ public class ReviewController {
     public CreateReviewResponse createReview(HttpServletRequest request, @RequestParam(required = false) MultipartFile file) throws IOException {
         Review review = new Review();
         review.setDoneDate(request.getParameter("doneDate"));
-        review.setTitle(request.getParameter("title"));
-        review.setReview(request.getParameter("review"));
+        review.setReviewTitle(request.getParameter("reviewTitle"));
+        review.setReviewContent(request.getParameter("reviewContent"));
         review.setPlace(request.getParameter("place"));
         review.setExpression(request.getParameter("expression"));
 
         if (file == null || file.isEmpty()) {
-            review.setPhotoId(1L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
+            review.setReviewPhotoId(1L); //사진 업로드가 안됐을 경우 기본 사진 id로 세팅
         } else {
             String originalFilename = file.getOriginalFilename();
             String storedFileName=s3Uploader.upload(file,"images");
 
             Long fileId = fileService.save(new UploadFile(originalFilename, storedFileName));
-            review.setPhotoId(fileId);
+            review.setReviewPhotoId(fileId);
         }
 
         Long id = reviewService.save(review);
@@ -110,7 +110,7 @@ public class ReviewController {
 
         //1.Amazon S3에서 파일 삭제
         //2.UploadFile 객체 삭제
-        Long photoId = review.getPhotoId();
+        Long photoId = review.getReviewPhotoId();
         if (photoId != 1) {
             s3Uploader.deleteFile(fileService.findOne(photoId).get().getFullPath());
             fileService.deleteFile(photoId);
@@ -130,11 +130,11 @@ public class ReviewController {
             @RequestParam Boolean isDeleted
             ) throws IOException{
 
-        reviewService.updateReview(reviewId, request.getParameter("title"), request.getParameter("review"), request.getParameter("doneDate"),
+        reviewService.updateReview(reviewId, request.getParameter("reviewTitle"), request.getParameter("reviewContent"), request.getParameter("doneDate"),
                 request.getParameter("place"), request.getParameter("expression")); //커맨드(수정)와
         Review findReview = reviewService.findOne(reviewId).get(); //쿼리(조회)를 분리
 
-        Long photoId = findReview.getPhotoId();
+        Long photoId = findReview.getReviewPhotoId();
         if(file == null || file.isEmpty()) {
             // Case A: file false && del true
             if(isDeleted && photoId != 1) {
@@ -164,6 +164,6 @@ public class ReviewController {
             // Case D: file true && del false 원래는 추가가 맞음. 지금은 사진 하나라 변경점 X
         }
 
-        return new UpdateReviewResponse(findReview.getId(), findReview.getTitle());
+        return new UpdateReviewResponse(findReview.getId(), findReview.getReviewTitle());
     }
 }

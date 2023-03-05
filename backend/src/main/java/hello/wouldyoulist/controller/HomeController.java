@@ -21,10 +21,10 @@ public class HomeController {
 
 //    @PostMapping("/users/new")
 //    public String register(@ModelAttribute UserForm form){
-//        User user= new User();
+//        User user = new User();
 //        user.setEmail(form.getEmail());
 //        user.setPassword(form.getPassword());
-//        user.setName(form.getName());
+//        user.setUserName(form.getUserName());
 //        user.setUserPhotoId(form.getUserPhotoId());
 //        userService.join(user);
 //        return "hello";

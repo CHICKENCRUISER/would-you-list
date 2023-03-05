@@ -39,10 +39,10 @@ public class TodoController {
         //엔티티를 직접 받아오면, 엔티티 검증 정보나 필드명 변경에 취약 -> 별도의 DTO 사용
         Todo todo = new Todo();
         todo.setUser(request.getUser());
-        todo.setName(request.getName());
-        todo.setDate(request.getDate());
+        todo.setTodoName(request.getTodoName());
+        todo.setPlanDate(request.getPlanDate());
         todo.setCategory(request.getCategory());
-        todo.setContent(request.getContent());
+        todo.setTodoContent(request.getTodoContent());
         todo.setState(request.getState());
 
         Long id = todoService.saveTodo(todo);
@@ -54,8 +54,8 @@ public class TodoController {
             @PathVariable Long todoId,
             @RequestBody UpdateTodoRequest request) {
 
-        todoService.updateTodo(todoId, request.getUser(), request.getName(), request.getDate(),
-                request.getCategory(), request.getContent()); //커맨드(수정)와
+        todoService.updateTodo(todoId, request.getUser(), request.getTodoName(), request.getPlanDate(),
+                request.getCategory(), request.getTodoContent()); //커맨드(수정)와
         Todo findTodo = todoService.findOne(todoId).get(); //쿼리(조회)를 분리
         return new UpdateTodoResponse(findTodo.getId(), findTodo.getUser());
     }
