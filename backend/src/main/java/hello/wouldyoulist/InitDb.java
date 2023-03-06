@@ -31,6 +31,9 @@ public class InitDb {
 
         public void DbInit() {
 
+//            User user1 = createUser("dlehdtjq00w@naver.com", "12341234", "이동섭", 1L);
+//            em.persist(user1);
+
             Todo todo1 = createTodo("이동섭", "종만북", "2월 5일 오후 7:30", "BOOK", "어쩌구저쩌구", true, null);
             Todo todo2 = createTodo("이동섭", "풋살", "2월 5일 오후 11:00", "SPORTS", "풋살체련 희망자!", true, null);
             Todo todo3 = createTodo("이동섭", "아바타", "2월 9일 오후 3:30", "MOVIE", "아바타2 보기전", false, null);
@@ -52,6 +55,15 @@ public class InitDb {
         public void fileDbInit() {
             UploadFile defaultPhoto = new UploadFile("defaultPhoto.jpeg", "https://wouldyoulistfile.s3.ap-northeast-2.amazonaws.com/images/97c08004-fb34-4fb1-ad4c-4100524d3957defaultPhoto.jpeg");
             em.persist(defaultPhoto);
+        }
+
+        private User createUser(String email, String password, String username, Long userPhotoId) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setUsername(username);
+            user.setUserPhotoId(userPhotoId);
+            return user;
         }
 
         private static Todo createTodo(String user, String todoName, String planDate, String category, String todoContent, Boolean state, Review review) {

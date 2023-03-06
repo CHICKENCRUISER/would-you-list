@@ -1,4 +1,4 @@
-package hello.wouldyoulist.domain;
+package hello.wouldyoulist.domain.dto;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +15,7 @@ public class UserForm {
     private Long id;
 
     private String email;
-    private String username;
     private String password;
+    private String username;
     private Long userPhotoId;
 }
