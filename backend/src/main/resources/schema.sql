@@ -29,7 +29,9 @@ CREATE TABLE review (
                         review_photo_id BIGINT
 );
 
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS user;
+SET foreign_key_checks = 1;
 CREATE TABLE user (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         email VARCHAR (255) ,

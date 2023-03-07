@@ -1,16 +1,12 @@
 package hello.wouldyoulist.repository;
 
 import hello.wouldyoulist.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
-    User save(User user);
-
-    List<User> findAll();
-
-    Optional<User> findById(Long id);
-
+@Transactional
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 }

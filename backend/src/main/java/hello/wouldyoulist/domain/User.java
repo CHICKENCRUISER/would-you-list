@@ -12,12 +12,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 @Getter @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class User implements UserDetails {
+@NoArgsConstructor
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,35 +35,13 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Todo> todos;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private List<Authority> roles = new ArrayList<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public void setRoles(List<Authority> role) {
+        this.roles = role;
+        role.forEach(o -> o.setUser(this));
     }
 
 }
