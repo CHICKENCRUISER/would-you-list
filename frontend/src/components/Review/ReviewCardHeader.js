@@ -47,7 +47,7 @@ const ReviewCardHeader = ({ data }) => {
       <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
         <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
         <Box>
-          <Heading size="sm">{data.title}</Heading>
+          <Heading size="sm">{data.reviewTitle}</Heading>
           <Text>{data.doneDate + " " + data.place + "에서"}</Text>
         </Box>
       </Flex>

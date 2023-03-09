@@ -55,7 +55,7 @@ const TodoBlock = ({ todo, refreshTodos, isDone }) => {
             onChange={toggleState}
           ></Checkbox>
           <Box as="span" flex="1" textAlign="left">
-            {todo.name}
+            {todo.todoName}
           </Box>
           <Badge
             minWidth="60px"

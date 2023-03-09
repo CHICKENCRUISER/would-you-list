@@ -43,7 +43,7 @@ const ReviewMain = () => {
               <CardBody style={{ padding: "0", justifyContent: "center" }}>
                 <Image
                   objectFit="cover"
-                  src={review.photo}
+                  src={review.reviewPhoto}
                   width="150px"
                   height="150px"
                 />
