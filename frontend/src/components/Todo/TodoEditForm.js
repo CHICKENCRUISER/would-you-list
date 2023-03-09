@@ -7,14 +7,14 @@ import { updateTodo } from "../../models/todos";
 // Todo 수정 컴포넌트
 const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
 
-  const [name, setName] = useState(todo.name);
+  const [todoName, setTodoName] = useState(todo.todoName);
   const [category, setCategory] = useState(todo.category);
-  const [content, setContent] = useState(todo.content);
-  const [date, setDate] = useState(todo.date);
+  const [todoContent, setTodoContent] = useState(todo.todoContent);
+  const [planDate, setPlanDate] = useState(todo.planDate);
 
   const dateInputChanged = (e) => {
     const { target: { value }} = e;
-    setDate(value);
+    setPlanDate(value);
   }
 
   // EditForm에서 입력받은 값을 서버에 업데이트하는 함수
@@ -22,10 +22,10 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
     e.preventDefault();
     const edittedTodo = {
       user: todo.user,
-      date,
-      name,
+      planDate,
+      todoName,
       category,
-      content,
+      todoContent,
     };
     try {
       await updateTodo(todo.id, edittedTodo);
@@ -40,8 +40,8 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           <Input
               type="text"
               placeholder="Todo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={todoName}
+              onChange={(e) => setTodoName(e.target.value)}
               mb={4}
               required
           />
@@ -62,7 +62,7 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
             <option value="SPORTS">SPORTS</option>
           </Select>
           <Input
-              value={date}
+              value={planDate}
               onChange={dateInputChanged}
               placeholder="Select Date and Time"
               size="md"
@@ -73,8 +73,8 @@ const EditForm = ({ refreshTodos, todo, toggleEdit }) => {
           <Textarea
               type="text"
               placeholder="Content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
+              value={todoContent}
+              onChange={(e) => setTodoContent(e.target.value)}
               mb={4}
               required
           />
