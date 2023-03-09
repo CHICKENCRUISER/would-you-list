@@ -47,19 +47,19 @@ public class ReviewService {
     }
 
     @Transactional
-    public void updateReview(Long reviewId,  String title, String review, String doneDate, String place, String expression){
+    public void updateReview(Long reviewId,  String reviewTitle, String reviewContent, String doneDate, String place, String expression){
         Review findReview = reviewRepository.findById(reviewId).get();
-        findReview.setTitle(title);
-        findReview.setReview(review);
+        findReview.setReviewTitle(reviewTitle);
+        findReview.setReviewContent(reviewContent);
         findReview.setDoneDate(doneDate);
         findReview.setPlace(place);
         findReview.setExpression(expression);
     }
 
     @Transactional
-    public void updateReviewPhotoId(Long reviewId, Long photoId){
+    public void updateReviewPhotoId(Long reviewId, Long reviewPhotoId){
         Review findReview = reviewRepository.findById(reviewId).get();
-        findReview.setPhotoId(photoId);
+        findReview.setReviewPhotoId(reviewPhotoId);
 
     }
 }

@@ -9,7 +9,7 @@ public interface TodoRepository {
 
     Todo save(Todo todo);
     Optional<Todo> findById(Long id);
-    Optional<Todo> findByName(String name);
+    Optional<Todo> findByTodoName(String todoName);
 
     List<Todo> findAll();
     List<Todo> findStateFalse();

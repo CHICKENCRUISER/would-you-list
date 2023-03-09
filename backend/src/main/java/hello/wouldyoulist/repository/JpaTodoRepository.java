@@ -46,9 +46,9 @@ public class JpaTodoRepository implements TodoRepository {
         return Optional.ofNullable(todo);
     }
 
-    public Optional<Todo> findByName(String name) {
-        List<Todo> result = em.createQuery("select distinct t from Todo t left join fetch t.review where t.name = :name", Todo.class)
-                .setParameter("name", name)
+    public Optional<Todo> findByTodoName(String todoName) {
+        List<Todo> result = em.createQuery("select distinct t from Todo t left join fetch t.review where t.todoName = :todoName", Todo.class)
+                .setParameter("todoName", todoName)
                 .getResultList();
         return result.stream().findAny();
     }

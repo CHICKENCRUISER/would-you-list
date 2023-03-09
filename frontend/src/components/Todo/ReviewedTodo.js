@@ -29,7 +29,7 @@ const ReviewedTodo = () => {
         <AccordionButton>리뷰 작성이 완료되었어요</AccordionButton>
         <AccordionPanel>
           {todos ? (
-            todos.map((todo) => (<h2 key={todo.id}>{todo.name}</h2>))
+            todos.map((todo) => (<h2 key={todo.id}>{todo.todoName}</h2>))
           ) : (
             <h2>리뷰를 작성해보세요!</h2>
           )}
