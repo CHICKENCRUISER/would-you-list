@@ -34,11 +34,11 @@ const ReviewCard = ({ data }) => {
 
         {/* Body */}
         <CardBody>
-          <Text>{data.review}</Text>
+          <Text>{data.reviewContent}</Text>
         </CardBody>
         <Image
           objectFit="cover"
-          src={data.photo}
+          src={data.reviewPhoto}
           alt="Chakra UI"
           width="600px"
           height="600px"

@@ -17,27 +17,27 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
     .toString()
     .padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
 
-  const [name, setName] = useState("");
+  const [todoName, setTodoName] = useState("");
   const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
-  const [date, setDate] = useState(dateString);
+  const [todoContent, setTodoContent] = useState("");
+  const [planDate, setPlanDate] = useState(dateString);
 
   const dateInputChanged = (e) => {
     const {
       target: { value },
     } = e;
     console.log("this is value" + value);
-    setDate(value);
+    setPlanDate(value);
   };
   const todoFormSubmitted = async (e) => {
     closeModal();
     e.preventDefault();
     const newTodo = {
       user: "이동섭",
-      date,
-      name,
+      planDate,
+      todoName,
       category,
-      content,
+      todoContent,
     };
     try {
       await createTodo(newTodo);
@@ -53,8 +53,8 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
         <Input
           type="text"
           placeholder="Todo"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={todoName}
+          onChange={(e) => setTodoName(e.target.value)}
           mb={4}
           required
         />
@@ -76,7 +76,7 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
         </Select>
         <Input
           onChange={dateInputChanged}
-          value={date}
+          value={planDate}
           placeholder="2023-02-21T07:57"
           size="md"
           type="datetime-local"
@@ -87,8 +87,8 @@ const NewTodo = ({ closeModal, refreshTodos }) => {
         <Textarea
           type="text"
           placeholder="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={todoContent}
+          onChange={(e) => setTodoContent(e.target.value)}
           mb={4}
           required
         />

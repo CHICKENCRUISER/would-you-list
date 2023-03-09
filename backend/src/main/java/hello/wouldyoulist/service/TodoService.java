@@ -28,13 +28,13 @@ public class TodoService {
     }
 
     @Transactional
-    public void updateTodo(Long todoId, String user, String name, String date, String category, String content){
+    public void updateTodo(Long todoId, String user, String todoName, String planDate, String category, String todoContent){
         Todo findTodo = todoRepository.findById(todoId).get();
         findTodo.setUser(user);
-        findTodo.setName(name);
-        findTodo.setDate(date);
+        findTodo.setTodoName(todoName);
+        findTodo.setPlanDate(planDate);
         findTodo.setCategory(category);
-        findTodo.setContent(content);
+        findTodo.setTodoContent(todoContent);
     }
 
     @Transactional

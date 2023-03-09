@@ -16,17 +16,22 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String user;
-    private String name;
-    private String date;
+    private String todoName;
+    private String planDate;
     private String category;
-    private String content;
+    private String todoContent;
     private Boolean state;
 
     @JsonManagedReference
     @OneToOne
     @JoinColumn(name = "review_id")
     private Review review;
+
+    private String user;
+//    @JsonManagedReference
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     //기본값 세팅 로직
     @PrePersist
