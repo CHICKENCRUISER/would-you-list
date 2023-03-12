@@ -6,15 +6,15 @@ import { EditIcon, SmallCloseIcon } from "@chakra-ui/icons";
 
 import { deleteTodo } from "../../models/todos";
 
-
 // 개별 Todo 컴포넌트의 내용 및 수정/삭제/리뷰작성 버튼 부분 컴포넌트
 const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
-
   const deleteBtnClicked = async () => {
     try {
       await deleteTodo(todo.id);
       refreshTodos();
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   let navigate = useNavigate();
@@ -29,13 +29,11 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
     photo: null,
   };
 
-
   return (
     <>
-      <div align="left"> {todo.content}</div>
+      <div align="left"> {todo.todoContent}</div>
 
       <Box align="right">
-
         {isDone ? (
           <Button
             leftIcon={<EditIcon />}
@@ -56,15 +54,18 @@ const TodoBlockOptions = ({ todo, refreshTodos, toggleEdit, isDone }) => {
           colorScheme="teal"
           size="xs"
           mr={1}
-        >Edit</Button>
+        >
+          Edit
+        </Button>
 
         <Button
           leftIcon={<SmallCloseIcon />}
           onClick={deleteBtnClicked}
           colorScheme="red"
           size="xs"
-        >Delete</Button>
-
+        >
+          Delete
+        </Button>
       </Box>
     </>
   );
