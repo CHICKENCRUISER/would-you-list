@@ -1,7 +1,7 @@
 <h1 align="center">:memo:우듀리스트 Would-You-List</h1>
 <br />
 <br />
-<div align="center"><img src="https://user-images.githubusercontent.com/52368015/218498280-e65c6aad-996d-441b-845a-52a4ea10f07a.png" width="200"></div>
+<div align="center"><img src="https://user-images.githubusercontent.com/67463603/224537168-711dfca7-d950-4e5c-9813-271dd8764550.png" width="200"></div>
 <br />
 
 ## 1. 프로젝트 소개
