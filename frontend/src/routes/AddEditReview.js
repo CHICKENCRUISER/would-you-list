@@ -16,11 +16,13 @@ import {
   Textarea,
   Badge,
   Image,
+  Button,
 } from "@chakra-ui/react";
 
 import ReviewAddModal from "../components/Review/ReviewAddModal";
 
 import { createReview, updateReview } from "../models/reviews";
+import ReviewAiModal from "../components/Review/ReviewAiModal";
 
 // 리뷰 추가와 리뷰 수정을 처리하는 컴포넌트
 const AddEditReview = () => {
@@ -165,7 +167,11 @@ const AddEditReview = () => {
                     mb={4}
                     required
                   />
-
+                  <ReviewAiModal
+                    todoName={data.todo.todoName}
+                    category={data.todo.category}
+                    setReview={setReview}
+                  />
                   {/* 이미지 */}
                   <Card>
                     <CardBody>
